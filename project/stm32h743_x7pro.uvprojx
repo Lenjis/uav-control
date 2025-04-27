@@ -10,7 +10,6 @@
       <TargetName>x7pro</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32H743XIHx</Device>
@@ -335,7 +334,7 @@
               <MiscControls>-g -W</MiscControls>
               <Define>STM32H7xx</Define>
               <Undefine></Undefine>
-              <IncludePath>.\include;.\include\data_struct;.\include\devices;.\include\GPS_message;.\include\hardwares;.\include\maths;.\include\navigation_ESKF;.\include\sim;.\include\startup;.\include\TCP;.\include\tele</IncludePath>
+              <IncludePath>.\;.\startup;.\hardwares;.\devices;.\maths;.\navigation_ESKF;.\GPS_message;.\TCP;.\data_struct;.\LIB;.\TELE;.\sim_control</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -377,72 +376,160 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>core</GroupName>
+          <GroupName>hardwares</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>1</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>sbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardwares\sbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpwmout.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardwares\mpwmout.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>startup</GroupName>
           <Files>
             <File>
               <FileName>init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\core\init.c</FilePath>
+              <FilePath>.\startup\init.c</FilePath>
             </File>
             <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\core\main.cpp</FilePath>
+              <FilePath>.\startup\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hardwares\usart.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>tele</GroupName>
-          <Files>
-            <File>
-              <FileName>state_define.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\tele\state_define.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>tele.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\tele\tele.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>sim</GroupName>
-          <Files>
-            <File>
-              <FileName>sim.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\sim\sim.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>harwares</GroupName>
-          <Files>
-            <File>
-              <FileName>mpwmout.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\hardwares\mpwmout.c</FilePath>
-            </File>
-            <File>
-              <FileName>sbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\hardwares\sbus.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>lib</GroupName>
+          <GroupName>LIB</GroupName>
           <Files>
             <File>
               <FileName>stm32h743_x7pro_drives.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>.\lib\stm32h743_x7pro_drives.lib</FilePath>
+              <FilePath>.\LIB\stm32h743_x7pro_drives.lib</FilePath>
             </File>
             <File>
               <FileName>stm32h743_x7pro_ESKF.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>.\lib\stm32h743_x7pro_ESKF.lib</FilePath>
+              <FilePath>.\LIB\stm32h743_x7pro_ESKF.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>TELE</GroupName>
+          <Files>
+            <File>
+              <FileName>tele.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\TELE\tele.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>teleH.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TELE\teleH.h</FilePath>
+            </File>
+            <File>
+              <FileName>state_define.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\TELE\state_define.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>state_define.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TELE\state_define.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>sim_control</GroupName>
+          <Files>
+            <File>
+              <FileName>sim.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\sim_control\sim.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Sim.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\sim_control\Sim.h</FilePath>
             </File>
           </Files>
         </Group>

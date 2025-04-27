@@ -1,4 +1,4 @@
-﻿#include "init.h"
+#include "init.h"
 #include "yn.h"
 #include "hardwares/usart.h"
 #include "navigation_ESKF/psins.hpp"
