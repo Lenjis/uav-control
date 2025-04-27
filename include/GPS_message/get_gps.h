@@ -10,16 +10,16 @@
 #define GOT_GGA_MSG  			 0
 #define GOT_VTG_MSG  			 1
 
-#define gnssFixOK			      	1<< 0
-#define diffSoln			      	1<< 1
-#define relPosValid				    1<< 2
-#define carrSolnFloat			    1<< 3
-#define carrSolnFixed			    1<< 4
-#define isMoving				      1<< 5
-#define refPosMiss				    1<< 6
-#define refObsMiss				    1<< 7
-#define relPosHeadingValid		1<< 8
-#define relPosNormalized		  1<< 9
+#define gnssFixOK				1<<0
+#define diffSoln				1<<1
+#define relPosValid				1<<2
+#define carrSolnFloat			1<<3
+#define carrSolnFixed			1<<4
+#define isMoving				1<<5
+#define refPosMiss				1<<6
+#define refObsMiss				1<<7
+#define relPosHeadingValid		1<<8
+#define relPosNormalized		1<<9
 	
 #define UBLOX_MAX_PAYLOAD   512
 #define UBLOX_WAIT_MS	    20
@@ -178,7 +178,7 @@ typedef struct{
 	/*euler angles*/
 	float roll,pitch,yaw;//(deg)euler angles
 	
-	float roll_acc,pitch_acc,yaw_acc;//(rad)1¦Ò angles accuracy	 
+	float roll_acc,pitch_acc,yaw_acc;//(rad)1ï¿½ï¿½ angles accuracy	 
 	
 	/*quaternion attitude*/
 	float Q[4];//quaternion parameters
@@ -186,7 +186,7 @@ typedef struct{
 	/*navigation,position,velocity*/
 	float veln,vele,veld;//(m/s)velocity in directions
 	
-	float veln_acc,vele_acc,veld_acc;//(m/s)1¦Ò velocity in directions accuracy
+	float veln_acc,vele_acc,veld_acc;//(m/s)1ï¿½ï¿½ velocity in directions accuracy
 	
 	double lat,lon;//(1e-7*deg)GPS postion
 	
@@ -194,7 +194,7 @@ typedef struct{
 	
 	float undulation;//altitude difference between the geoid and the ellipsoid(WGS-84 altitude=MSL altitude + undulation)
 	
-	float lat_acc,lon_acc,alt_acc;//(m)1¦Ò position accuracy
+	float lat_acc,lon_acc,alt_acc;//(m)1ï¿½ï¿½ position accuracy
 	
 	/*magnetometer*/
 	unsigned short mag_status;//magnetometer status bitmask
@@ -227,7 +227,7 @@ typedef struct{
 	
 	float course;//(deg)true direction of motion over ground(0-360deg)
 	
-	float course_acc;//(deg)1¦Ò course accuracy
+	float course_acc;//(deg)1ï¿½ï¿½ course accuracy
 	
 	/*GNSS position*/
 	unsigned long GPS_pos_status;//GPS position fix and atatus bitmask
@@ -285,11 +285,11 @@ typedef struct{
 	
 	float gps_hdt;//(deg)GPS true heading
 	
-	float gps_hdt_acc;//(deg)1¦Ò GPS true heading acuracy
+	float gps_hdt_acc;//(deg)1ï¿½ï¿½ GPS true heading acuracy
 	
 	float gps_pitch;//(deg)pitch angle from the master to the rover
 	
-	float gps_pitch_acc;//(deg)1¦Ò pitch estimated accuracy
+	float gps_pitch_acc;//(deg)1ï¿½ï¿½ pitch estimated accuracy
 	
 	float gps_baseline;//(m)distance between main and aux antenna
 	
@@ -342,10 +342,10 @@ typedef struct  {
     float       GPSHorizAcc, GPSVertAcc;
     float       HDOP;
     float       geoidAboveEllipsoid;    // [m] Height of geoid (mean sea level) above WGS84 ellipsoid
-		uint32_t    headingiTOW;           // gps Time Of Week, miliseconds
-		float				 heading;
-		float				 hdg_std_dev;
-		unsigned char hdg_update;		
+	uint32_t    headingiTOW;           // gps Time Of Week, miliseconds
+	float		heading;
+	float		hdg_std_dev;
+	unsigned char hdg_update;		
     bool        heading_update;		
 } gpsDataStruct_t;
 
