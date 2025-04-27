@@ -1,4 +1,4 @@
-#include "yn.h"
+ï»¿#include "yn.h"
 #include "Sbus.h"
 #include "data_struct.h"
 #include <stdint.h>
@@ -142,15 +142,15 @@ void PWM_sbus(void)
     	on_safe=false;  
     }
     
-    PWMin[0].val = (PWMin[0].vol-1.5-PWMout[0].offset)/PWMout[0].ratio; //¸±Òí   
-    PWMin[1].val = (PWMin[1].vol-1.5-PWMout[1].offset)/PWMout[1].ratio; //Éı½µ
-    PWMin[2].val = (PWMin[2].vol-1.0-PWMout[2].offset)/PWMout[2].ratio; //ÓÍÃÅ
-    PWMin[3].val = (PWMin[3].vol-1.5-PWMout[3].offset)/PWMout[3].ratio; //·½Ïò
-    PWMin[4].val = (PWMin[4].vol-1.5-PWMout[4].offset)/PWMout[4].ratio; //°²¿Ø
+    PWMin[0].val = (PWMin[0].vol-1.5-PWMout[0].offset)/PWMout[0].ratio; //å‰¯ç¿¼   
+    PWMin[1].val = (PWMin[1].vol-1.5-PWMout[1].offset)/PWMout[1].ratio; //å‡é™
+    PWMin[2].val = (PWMin[2].vol-1.0-PWMout[2].offset)/PWMout[2].ratio; //æ²¹é—¨
+    PWMin[3].val = (PWMin[3].vol-1.5-PWMout[3].offset)/PWMout[3].ratio; //æ–¹å‘
+    PWMin[4].val = (PWMin[4].vol-1.5-PWMout[4].offset)/PWMout[4].ratio; //å®‰æ§
 }
 
 
-void SBUS_Monitor(void)                       //·ÅÈë100msµÄÈÎÎñÖĞ
+void SBUS_Monitor(void)                       //æ”¾å…¥100msçš„ä»»åŠ¡ä¸­
 {
 
     static uint8_t	 cnt = 0;

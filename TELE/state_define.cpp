@@ -1,55 +1,55 @@
-#include "yn.h"
+ï»¿#include "yn.h"
 
-/*********×´Ì¬±äÁ¿¶¨Òå simu state define*********/     
-float     ac_theta, ac_phi, ac_psi;   //attitude ×ËÌ¬½Ç
-float     ac_alpha, ac_beta;          //alpha, beta Ó­½Ç£¬²à»¬½Ç
-float     ac_P,ac_Q,ac_R;             //PQR ÈıÖá½ÇËÙÂÊ
-float     ac_ax, ac_ay, ac_az;        //accelx »úÌå¹ıÔØ
-float     ac_PE, ac_PN, ac_height;    //XYZ ×ø±êÏµÎ»ÖÃ
-float     ac_vt;   //¿ÕËÙ
-float     ac_dH;   //ÏÂ³ÁÂÊ
-float     ac_dZ;   //²àÆ«¾à
-float     ac_dL;   //´ı·É¾àÀë
-float     ac_dpsi; //Æ«º½½Ç
-float     ac_dot;  //º½¶ÎºÅ
-float     psi_hmr; //Õæº½Ïò
+/*********çŠ¶æ€å˜é‡å®šä¹‰ simu state define*********/     
+float     ac_theta, ac_phi, ac_psi;   //attitude å§¿æ€è§’
+float     ac_alpha, ac_beta;          //alpha, beta è¿è§’ï¼Œä¾§æ»‘è§’
+float     ac_P,ac_Q,ac_R;             //PQR ä¸‰è½´è§’é€Ÿç‡
+float     ac_ax, ac_ay, ac_az;        //accelx æœºä½“è¿‡è½½
+float     ac_PE, ac_PN, ac_height;    //XYZ åæ ‡ç³»ä½ç½®
+float     ac_vt;   //ç©ºé€Ÿ
+float     ac_dH;   //ä¸‹æ²‰ç‡
+float     ac_dZ;   //ä¾§åè·
+float     ac_dL;   //å¾…é£è·ç¦»
+float     ac_dpsi; //åèˆªè§’
+float     ac_dot;  //èˆªæ®µå·
+float     psi_hmr; //çœŸèˆªå‘
 float     ac_mass = 17;
 
-/*********¿ØÖÆ±äÁ¿¶¨Òå sim control para define*********/
-float     theta_cmd, gama_cmd, engine_cmd,  height_cmd,  Vt_cmd, Hdot_cmd;  //Ö¸Áî±äÁ¿
-float     theta_var, gama_var, engine_var,  height_var,  Vt_var;             //Ö¸Áî±äÁ¿£¨Èí»¯ºó£¿£©
-float     ele_var, ail_var, rud_var;                                //¶æÃæÖ¸Áî
-float   	ail_trim, ele_trim, rud_trim, eng_trim;                   //³õÊ¼Æ½·ÉÅäÆ½Öµ
-float     psi_cmd;                                                  //¸ø¶¨º½Ïò
+/*********æ§åˆ¶å˜é‡å®šä¹‰ sim control para define*********/
+float     theta_cmd, gama_cmd, engine_cmd,  height_cmd,  Vt_cmd, Hdot_cmd;  //æŒ‡ä»¤å˜é‡
+float     theta_var, gama_var, engine_var,  height_var,  Vt_var;             //æŒ‡ä»¤å˜é‡ï¼ˆè½¯åŒ–åï¼Ÿï¼‰
+float     ele_var, ail_var, rud_var;                                //èˆµé¢æŒ‡ä»¤
+float   	ail_trim, ele_trim, rud_trim, eng_trim;                   //åˆå§‹å¹³é£é…å¹³å€¼
+float     psi_cmd;                                                  //ç»™å®šèˆªå‘
 
-float     theta_int, theta_int_min, theta_int_max;                  //¸©Ñö½Ç¿ØÖÆ»ı·Ö£¬ÉÏÏÂÏŞ·ù
-float     gama_int, gama_int_min, gama_int_max;                     //¹ö×ª½Ç¿ØÖÆ»ı·Ö£¬ÉÏÏÂÏŞ·ù
-float     H_int , H_int_min, H_int_max;                             //¸ß¶È¿ØÖÆ»ı·Ö£¬ÉÏÏÂÏŞ·ù
-float     KpV, IpV, engine_V=0,theta_V=0;                           //¿ÕËÙ¿ØÖÆÔöÒæ£¬ÓÍÃÅ»ı·Ö£¬¸©Ñö½Ç»ı·Ö
-float     Igama=0;                                                  //¹ö×ª½Ç¿ØÖÆ»ı·Ö           
-float     landing_high;                                             //×ÅÂ½ÆğÊ¼¸ß¶È
+float     theta_int, theta_int_min, theta_int_max;                  //ä¿¯ä»°è§’æ§åˆ¶ç§¯åˆ†ï¼Œä¸Šä¸‹é™å¹…
+float     gama_int, gama_int_min, gama_int_max;                     //æ»šè½¬è§’æ§åˆ¶ç§¯åˆ†ï¼Œä¸Šä¸‹é™å¹…
+float     H_int , H_int_min, H_int_max;                             //é«˜åº¦æ§åˆ¶ç§¯åˆ†ï¼Œä¸Šä¸‹é™å¹…
+float     KpV, IpV, engine_V=0,theta_V=0;                           //ç©ºé€Ÿæ§åˆ¶å¢ç›Šï¼Œæ²¹é—¨ç§¯åˆ†ï¼Œä¿¯ä»°è§’ç§¯åˆ†
+float     Igama=0;                                                  //æ»šè½¬è§’æ§åˆ¶ç§¯åˆ†           
+float     landing_high;                                             //ç€é™†èµ·å§‹é«˜åº¦
 
-/***********Ò£¿ØÆ÷¿ØÖÆ²ÎÊı***********/
+/***********é¥æ§å™¨æ§åˆ¶å‚æ•°***********/
 short     tag_LongSwitch=0, tag_SaveEleSwitch=0, tag_SaveEngSwitch=0, tag_ViHoldON=0, tag_opt=0; 
 
-/***********ÆøÑ¹¼Æ²ÎÊı***********/
-float  	  height_ini=0,   //³õÊ¼ÆøÑ¹¸ß¶È
-	        height_adc;     //ÆøÑ¹¸ß¶È
+/***********æ°”å‹è®¡å‚æ•°***********/
+float  	  height_ini=0,   //åˆå§‹æ°”å‹é«˜åº¦
+	        height_adc;     //æ°”å‹é«˜åº¦
 
-/***********GPSĞÅºÅ²ÎÊı***********/
-float       lon_gps,   //¾­¶È        
-						lat_gps,   //Î³¶È 
-						lon_ref,   //XYZ×ø±êÏµÔ­µã¾­¶È 
-						lat_ref,   //XYZ×ø±êÏµÔ­µãÎ³¶È 
-						psi_init,  //³õÊ¼º½Ïò
-	          psi_gps,   //GPSº½¼£½Ç       
-            alt_gps,   //GPS¸ß¶È      
-						Hdot_gps,  //Éı½µËÙ¶È
-						H_acc,     //GPSË®Æ½¾­¶È
-            V_acc,     //GPS´¹Ö±¾­¶È 
-            Vd_gps;    //GPSµØËÙ
+/***********GPSä¿¡å·å‚æ•°***********/
+float       lon_gps,   //ç»åº¦        
+						lat_gps,   //çº¬åº¦ 
+						lon_ref,   //XYZåæ ‡ç³»åŸç‚¹ç»åº¦ 
+						lat_ref,   //XYZåæ ‡ç³»åŸç‚¹çº¬åº¦ 
+						psi_init,  //åˆå§‹èˆªå‘
+	          psi_gps,   //GPSèˆªè¿¹è§’       
+            alt_gps,   //GPSé«˜åº¦      
+						Hdot_gps,  //å‡é™é€Ÿåº¦
+						H_acc,     //GPSæ°´å¹³ç»åº¦
+            V_acc,     //GPSå‚ç›´ç»åº¦ 
+            Vd_gps;    //GPSåœ°é€Ÿ
       
-unsigned char	used_gps;  //GPSÊÕĞÇÊı    
+unsigned char	used_gps;  //GPSæ”¶æ˜Ÿæ•°    
 unsigned char tag_DGPS; 
             
 /***********KaWx***********/

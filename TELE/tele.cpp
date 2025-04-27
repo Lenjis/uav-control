@@ -1,4 +1,4 @@
-#include "Sbus.h"
+ï»¿#include "Sbus.h"
 #include "math.h"
 #include "yn.h"
 
@@ -24,13 +24,13 @@ void navCalcEarthRadius(double lat) {
     navUkfData.r2 = (double)NAV_EQUATORIAL_RADIUS * (double)DEG_TO_RAD / sqrt((double)1.0 - ((double)NAV_E_2 * sinLat2)) * cos(lat * (double)DEG_TO_RAD);
 }
 
-void  WP_Pos2XY (float lon_ref,float lat_ref, float lon,float lat, float *x,float *y)//Á½µã¾­Î³¶È×ª¶«±±Ìì×ø±ê
+void  WP_Pos2XY (float lon_ref,float lat_ref, float lon,float lat, float *x,float *y)//ä¸¤ç‚¹ç»çº¬åº¦è½¬ä¸œåŒ—å¤©åæ ‡
 {
 	*y=(lat -lat_ref) * navUkfData.r1;
   *x=(lon -lon_ref) * navUkfData.r2;
 }
 
-/*UBLOX »ñÈ¡*/
+/*UBLOX è·å–*/
 void TaskUblox()
 {
 	static unsigned char readbuf[200];
@@ -58,7 +58,7 @@ void TaskUblox()
 	}
 }
 
-//·ÅÈë100msµÄÈÎÎñ
+//æ”¾å…¥100msçš„ä»»åŠ¡
 void  Ublox_Monitor()                                 
 {
   static INT16U	cnt=0, flag1s=false, old_counter;
@@ -73,7 +73,7 @@ void  Ublox_Monitor()
 	}
 }
 
-/*[Ò£²âÊı¾İÖ¡·¢ËÍ¹ÜÀí]*/
+/*[é¥æµ‹æ•°æ®å¸§å‘é€ç®¡ç†]*/
 void  TELE_TxMan (void)
 {
   unsigned char   Buf[100];
@@ -87,7 +87,7 @@ void  TELE_TxMan (void)
 }
 
 
-/*[Ò£²âÊı¾İAÖ¡]*/
+/*[é¥æµ‹æ•°æ®Aå¸§]*/
 void  TELE_FrameA (unsigned char Buf[])
 {
 
@@ -97,52 +97,52 @@ void  TELE_FrameA (unsigned char Buf[])
     Buf[1]=0x90;
     Buf[2]='A';
 	
-		src.D[0]=(INT16S)(ac_theta*Rad2Deg*10);      Buf[ 3]=src.B[0];  Buf[ 4]=src.B[1];     //[¸©Ñö½Çtheta_gyo
-    src.D[0]=(INT16S)(ac_phi*Rad2Deg*10);       Buf[ 5]=src.B[0];  Buf[ 6]=src.B[1];     /*[¹ö×ª½Ç]*/
-    src.W[0]=(INT16U)(psi_hmr*10);        Buf[ 7]=src.B[0];  Buf[ 8]=src.B[1];     /*[Õæº½Ïò]*/
-    src.D[0]=(INT16S)(ac_P*Rad2Deg*10);         Buf[ 9]=src.B[0];  Buf[10]=src.B[1];     //[¹ö×ª½ÇËÙÂÊWx_gyo
-    src.D[0]=(INT16S)(ac_R*Rad2Deg*10);         Buf[11]=src.B[0];  Buf[12]=src.B[1];     //[Æ«º½½ÇËÙÂÊWy_gyo
-    src.D[0]=(INT16S)(ac_Q*Rad2Deg*10);         Buf[13]=src.B[0];  Buf[14]=src.B[1];     //[¸©Ñö½ÇËÙÂÊWz_gyo
+		src.D[0]=(INT16S)(ac_theta*Rad2Deg*10);      Buf[ 3]=src.B[0];  Buf[ 4]=src.B[1];     //[ä¿¯ä»°è§’theta_gyo
+    src.D[0]=(INT16S)(ac_phi*Rad2Deg*10);       Buf[ 5]=src.B[0];  Buf[ 6]=src.B[1];     /*[æ»šè½¬è§’]*/
+    src.W[0]=(INT16U)(psi_hmr*10);        Buf[ 7]=src.B[0];  Buf[ 8]=src.B[1];     /*[çœŸèˆªå‘]*/
+    src.D[0]=(INT16S)(ac_P*Rad2Deg*10);         Buf[ 9]=src.B[0];  Buf[10]=src.B[1];     //[æ»šè½¬è§’é€Ÿç‡Wx_gyo
+    src.D[0]=(INT16S)(ac_R*Rad2Deg*10);         Buf[11]=src.B[0];  Buf[12]=src.B[1];     //[åèˆªè§’é€Ÿç‡Wy_gyo
+    src.D[0]=(INT16S)(ac_Q*Rad2Deg*10);         Buf[13]=src.B[0];  Buf[14]=src.B[1];     //[ä¿¯ä»°è§’é€Ÿç‡Wz_gyo
 
-    src.W[0]=(INT16U)(ac_vt*2);          Buf[15]=src.B[0];                        /*[Ö¸Ê¾¿ÕËÙ]*/
+    src.W[0]=(INT16U)(ac_vt*2);          Buf[15]=src.B[0];                        /*[æŒ‡ç¤ºç©ºé€Ÿ]*/
 
-    src.D[0]=(INT16S)(height_adc*10);     Buf[16]=src.B[0];  Buf[17]=src.B[1];     /*[ÆøÑ¹¸ß¶È]*/
-    src.D[0]=(INT16S)(height_ini*10);     Buf[18]=src.B[0];  Buf[19]=src.B[1];     /*[³õÊ¼ÆøÑ¹¸ß¶È]*/
+    src.D[0]=(INT16S)(height_adc*10);     Buf[16]=src.B[0];  Buf[17]=src.B[1];     /*[æ°”å‹é«˜åº¦]*/
+    src.D[0]=(INT16S)(height_ini*10);     Buf[18]=src.B[0];  Buf[19]=src.B[1];     /*[åˆå§‹æ°”å‹é«˜åº¦]*/
    
 
-    src.D[0]=(INT16S)(ac_ail*2);         Buf[20]=src.B[0];                        /*[¸±Òí¶æ»ú]*/
-    src.W[0]=(INT16U)(engine_var);        Buf[21]=src.B[0];                        /*[ÓÍÃÅ¿ª¶È]*/
-    src.D[0]=(INT16S)(ac_ele*2);         Buf[22]=src.B[0];                        /*[Éı½µ¶æ»ú]*/
-	  src.D[0]=(INT16S)(rud_var*2);         Buf[23]=src.B[0];                        /*[·½Ïò¶æ»ú]*/
-	  src.W[0]=(INT16U)(psi_cmd);           Buf[24]=src.B[0];                        /*[º½Ïò¸ø¶¨]*/
+    src.D[0]=(INT16S)(ac_ail*2);         Buf[20]=src.B[0];                        /*[å‰¯ç¿¼èˆµæœº]*/
+    src.W[0]=(INT16U)(engine_var);        Buf[21]=src.B[0];                        /*[æ²¹é—¨å¼€åº¦]*/
+    src.D[0]=(INT16S)(ac_ele*2);         Buf[22]=src.B[0];                        /*[å‡é™èˆµæœº]*/
+	  src.D[0]=(INT16S)(rud_var*2);         Buf[23]=src.B[0];                        /*[æ–¹å‘èˆµæœº]*/
+	  src.W[0]=(INT16U)(psi_cmd);           Buf[24]=src.B[0];                        /*[èˆªå‘ç»™å®š]*/
 		
 
-    src.D[0]=(INT16S)(theta_var*2);       Buf[25]=src.B[0];                        /*[¸©Ñö½ÇÖ¸Áî]*/
-    src.D[0]=(INT16S)((gama_var)*2);        Buf[26]=src.B[0];                        /*[¹ö×ª½ÇÖ¸Áî]*/
-    src.D[0]=(INT16S)((height_var)*10);     Buf[27]=src.B[0];  Buf[28]=src.B[1];     /*[¸ß¶È¸ø¶¨Á¿]*/   
+    src.D[0]=(INT16S)(theta_var*2);       Buf[25]=src.B[0];                        /*[ä¿¯ä»°è§’æŒ‡ä»¤]*/
+    src.D[0]=(INT16S)((gama_var)*2);        Buf[26]=src.B[0];                        /*[æ»šè½¬è§’æŒ‡ä»¤]*/
+    src.D[0]=(INT16S)((height_var)*10);     Buf[27]=src.B[0];  Buf[28]=src.B[1];     /*[é«˜åº¦ç»™å®šé‡]*/   
     
     
     /////////////////////////////////////////////////////////////////////////////////////////////       			       
-    src.D[0]=(INT16S)(H_int*10);             Buf[29]=src.B[0];                        /*[¸ß¶È»ı·Ö]*/
-    src.D[0]=(INT16S)(ac_dH*10);             Buf[30]=src.B[0];                        /*[¸ß¶È²î]*/
+    src.D[0]=(INT16S)(H_int*10);             Buf[29]=src.B[0];                        /*[é«˜åº¦ç§¯åˆ†]*/
+    src.D[0]=(INT16S)(ac_dH*10);             Buf[30]=src.B[0];                        /*[é«˜åº¦å·®]*/
     
     
     /////////////////////////////////////////////////////////////////////////////////////////////
 
     
-    src.D[0]=(INT16S)(ac_PE*10); 			Buf[31]=src.B[0];  Buf[32]=src.B[1];    /*¶«Ïò¾àÀë*/ 
-    src.D[0]=(INT16S)(ac_PN*10);            Buf[33]=src.B[0];  Buf[34]=src.B[1];    /*±±Ïò¾àÀë*/
+    src.D[0]=(INT16S)(ac_PE*10); 			Buf[31]=src.B[0];  Buf[32]=src.B[1];    /*ä¸œå‘è·ç¦»*/ 
+    src.D[0]=(INT16S)(ac_PN*10);            Buf[33]=src.B[0];  Buf[34]=src.B[1];    /*åŒ—å‘è·ç¦»*/
        
     
-    src.D[0]=(INT16S)(PWMin[0].val*2);    Buf[35]=src.B[0];                        /*[×ó¸±ÒíÒ£¿Ø]*/
-    src.D[0]=(INT16S)(PWMin[3].val*2);    Buf[36]=src.B[0];                        /*[VÎ²2Ò£¿Ø]*/
-    src.W[0]=(INT16U)(PWMin[2].val);      Buf[37]=src.B[0];                        /*[ÓÍÃÅÒ£¿Ø]*/
-    src.D[0]=(INT16S)(PWMin[1].val*2);    Buf[38]=src.B[0];                        /*[Éı½µ¶æÒ£¿Ø]*/
-    src.W[0]=(INT16U)(WD_cnt);      	  Buf[39]=src.B[0];                        //[¿´ÃÅ¹·¼ÆÊı]);
-    src.W[0]=(INT16U)(theta_int*2);       Buf[40]=src.B[0];  Buf[41]=src.B[1];     //[¸©Ñö½Ç»ı·Ö]);   
+    src.D[0]=(INT16S)(PWMin[0].val*2);    Buf[35]=src.B[0];                        /*[å·¦å‰¯ç¿¼é¥æ§]*/
+    src.D[0]=(INT16S)(PWMin[3].val*2);    Buf[36]=src.B[0];                        /*[Vå°¾2é¥æ§]*/
+    src.W[0]=(INT16U)(PWMin[2].val);      Buf[37]=src.B[0];                        /*[æ²¹é—¨é¥æ§]*/
+    src.D[0]=(INT16S)(PWMin[1].val*2);    Buf[38]=src.B[0];                        /*[å‡é™èˆµé¥æ§]*/
+    src.W[0]=(INT16U)(WD_cnt);      	  Buf[39]=src.B[0];                        //[çœ‹é—¨ç‹—è®¡æ•°]);
+    src.W[0]=(INT16U)(theta_int*2);       Buf[40]=src.B[0];  Buf[41]=src.B[1];     //[ä¿¯ä»°è§’ç§¯åˆ†]);   
 	  src.W[0]=(INT16U)(battery_volt*600);  Buf[42]=src.B[0];  Buf[43]=src.B[1];     //[KaWx]//(INT16U)(K.P.KaWx*100)
-    src.W[0]=(INT16S)(theta_V*2);         Buf[44]=src.B[0];  Buf[45]=src.B[1];     //¿ÕËÙ¿ØÖÆ¸©Ñö½Ç»ı·Ö
-    src.D[0]=(INT16U)(landing_high*10);  Buf[46]=src.B[0];  Buf[47]=src.B[1];     //×ÅÂ½ÆğÊ¼¸ß¶È
+    src.W[0]=(INT16S)(theta_V*2);         Buf[44]=src.B[0];  Buf[45]=src.B[1];     //ç©ºé€Ÿæ§åˆ¶ä¿¯ä»°è§’ç§¯åˆ†
+    src.D[0]=(INT16U)(landing_high*10);  Buf[46]=src.B[0];  Buf[47]=src.B[1];     //ç€é™†èµ·å§‹é«˜åº¦
 
 
 }
@@ -162,7 +162,7 @@ INT16S  BitStatus( unsigned char  B, unsigned char  idx )
 }
 
 
-/*[Ò£²âÊı¾İBÖ¡]*/
+/*[é¥æµ‹æ•°æ®Bå¸§]*/
 void  TELE_FrameB (unsigned char Buf[])
 {
     dWordStruc  src;
@@ -171,62 +171,62 @@ void  TELE_FrameB (unsigned char Buf[])
     Buf[1]=0x90;
     Buf[2]='B';
 
-		src.DW  =(INT32S)(lon_gps*1e6);      Buf[ 3]=src.B[0];  Buf[ 4]=src.B[1];     /*[¾­¶È]*/
+		src.DW  =(INT32S)(lon_gps*1e6);      Buf[ 3]=src.B[0];  Buf[ 4]=src.B[1];     /*[ç»åº¦]*/
                                          Buf[ 5]=src.B[2];  Buf[ 6]=src.B[3];
-    src.DW  =(INT32S)(lat_gps*1e6);      Buf[ 7]=src.B[0];  Buf[ 8]=src.B[1];     /*[Î³¶È]*/
+    src.DW  =(INT32S)(lat_gps*1e6);      Buf[ 7]=src.B[0];  Buf[ 8]=src.B[1];     /*[çº¬åº¦]*/
                                          Buf[ 9]=src.B[2];  Buf[10]=src.B[3];
-    src.W[0]=(INT16U)(Vd_gps*2);         Buf[11]=src.B[0];                        /*[µØËÙ]*/
-    src.W[0]=(INT16U)(psi_gps*10);       Buf[12]=src.B[0];  Buf[13]=src.B[1];     /*[º½¼£½Ç]*/
-    src.D[0]=(INT16S)(alt_gps*10);       Buf[14]=src.B[0];  Buf[15]=src.B[1];     /*[º£°Î¸ß¶È]*/
-    src.D[0]=(INT16S)(Hdot_gps*10);      Buf[16]=src.B[0];  Buf[17]=src.B[1];     /*[Éı½µËÙ¶È]*/
-    src.W[0]=used_gps;                   Buf[18]=used_gps;                        /*[¿É¼ûĞÇÊı]*/
+    src.W[0]=(INT16U)(Vd_gps*2);         Buf[11]=src.B[0];                        /*[åœ°é€Ÿ]*/
+    src.W[0]=(INT16U)(psi_gps*10);       Buf[12]=src.B[0];  Buf[13]=src.B[1];     /*[èˆªè¿¹è§’]*/
+    src.D[0]=(INT16S)(alt_gps*10);       Buf[14]=src.B[0];  Buf[15]=src.B[1];     /*[æµ·æ‹”é«˜åº¦]*/
+    src.D[0]=(INT16S)(Hdot_gps*10);      Buf[16]=src.B[0];  Buf[17]=src.B[1];     /*[å‡é™é€Ÿåº¦]*/
+    src.W[0]=used_gps;                   Buf[18]=used_gps;                        /*[å¯è§æ˜Ÿæ•°]*/
 	
 	                                       Buf[19]=0;
 	                                       Buf[20]=0;
-    if (!ss_AHRS.fail)                   SetBit(&Buf[20],4);                      /*[AHRSÊı¾İÁ´Í¨]*/
+    if (!ss_AHRS.fail)                   SetBit(&Buf[20],4);                      /*[AHRSæ•°æ®é“¾é€š]*/
         else                             ClearBit(&Buf[20],4); 
-    if (!ss_Mpxv.fail)                   SetBit(&Buf[20],5);                      /*[¿ÕËÙÊı¾İÁ´Í¨]*/
+    if (!ss_Mpxv.fail)                   SetBit(&Buf[20],5);                      /*[ç©ºé€Ÿæ•°æ®é“¾é€š]*/
         else                             ClearBit(&Buf[20],5);
-    if (!ss_Gps.fail)                    SetBit(&Buf[20],6);                      /*[GPSÊı¾İÁ´Í¨]*/  
+    if (!ss_Gps.fail)                    SetBit(&Buf[20],6);                      /*[GPSæ•°æ®é“¾é€š]*/  
         else                             ClearBit(&Buf[20],6);                      
     if (tag_DGPS)                        SetBit(&Buf[20],7);                      /*[DGPS]*/
         else                             ClearBit(&Buf[20],7);
 
-    Buf[21]=0;                                                                    /*[ÏµÍ³×´Ì¬×Ö3]*/
-    if (on_reset)                        SetBit(&Buf[21],0);                      /*[¸´Î»]*/
+    Buf[21]=0;                                                                    /*[ç³»ç»ŸçŠ¶æ€å­—3]*/
+    if (on_reset)                        SetBit(&Buf[21],0);                      /*[å¤ä½]*/
 
-    if (on_takeoff)                      SetBit(&Buf[21],1);                      /*[Æğ·É]*/
+    if (on_takeoff)                      SetBit(&Buf[21],1);                      /*[èµ·é£]*/
 
-    if (OnStop_eng)                      SetBit(&Buf[21],2);                      /*[·¢¶¯»úÔ¤Í£]*/
+    if (OnStop_eng)                      SetBit(&Buf[21],2);                      /*[å‘åŠ¨æœºé¢„åœ]*/
 
-    if (on_safe)                         SetBit(&Buf[21],3);                      /*[°²¿Ø×´Ì¬]*/
-                                                                                /*[Buf[3].5~7=×ÔÖ÷·ÉĞĞÄ£Ì¬]*/
+    if (on_safe)                         SetBit(&Buf[21],3);                      /*[å®‰æ§çŠ¶æ€]*/
+                                                                                /*[Buf[3].5~7=è‡ªä¸»é£è¡Œæ¨¡æ€]*/
 
-    Buf[22]=0;                                                                    /*[ÏµÍ³×´Ì¬×Ö4]*/
-    if (on_sky)                          SetBit(&Buf[22],0);                      /*[·É»úÔÚ¿ÕÖĞ]*/
+    Buf[22]=0;                                                                    /*[ç³»ç»ŸçŠ¶æ€å­—4]*/
+    if (on_sky)                          SetBit(&Buf[22],0);                      /*[é£æœºåœ¨ç©ºä¸­]*/
      
-    if (tag_opt)                         SetBit(&Buf[22],2);                      /*[¸¨Öú¿ØÖÆ×´Ì¬]*/
+    if (tag_opt)                         SetBit(&Buf[22],2);                      /*[è¾…åŠ©æ§åˆ¶çŠ¶æ€]*/
    
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////
-    src.D[0]=(INT16S)(ac_dpsi*10);          Buf[23]=src.B[0];  Buf[24]=src.B[1];     /*[Æ«º½½Ç]*/
-                                            Buf[25]=ac_dot;                          /*[º½¶ÎºÅ]*/
-    src.D[0]=(INT16S)(ac_dL*10.0f);         Buf[26]=src.B[0];  Buf[27]=src.B[1];     /*[´ı·É¾àÀë]*/
-    src.D[0]=(INT16S)(ac_dZ*10);            Buf[28]=src.B[0];  Buf[29]=src.B[1];     /*[²àÆ«¾à]*/
+    src.D[0]=(INT16S)(ac_dpsi*10);          Buf[23]=src.B[0];  Buf[24]=src.B[1];     /*[åèˆªè§’]*/
+                                            Buf[25]=ac_dot;                          /*[èˆªæ®µå·]*/
+    src.D[0]=(INT16S)(ac_dL*10.0f);         Buf[26]=src.B[0];  Buf[27]=src.B[1];     /*[å¾…é£è·ç¦»]*/
+    src.D[0]=(INT16S)(ac_dZ*10);            Buf[28]=src.B[0];  Buf[29]=src.B[1];     /*[ä¾§åè·]*/
     ////////////////////////////////////////////////////////////////////////////////////////////
     
-    src.D[0]=(INT16S)(0*10);             Buf[30]=src.B[0];  Buf[31]=src.B[1];     /*[»ú³¡¸ß¶È]*/    
+    src.D[0]=(INT16S)(0*10);             Buf[30]=src.B[0];  Buf[31]=src.B[1];     /*[æœºåœºé«˜åº¦]*/    
     
     src.DW  =(INT32S)(ac_ax*1e6);
-                                         Buf[32]=src.B[0];  Buf[33]=src.B[1];     /*[Ç°Ïò¹ıÔØ]*/
+                                         Buf[32]=src.B[0];  Buf[33]=src.B[1];     /*[å‰å‘è¿‡è½½]*/
                                          Buf[34]=src.B[2];  Buf[35]=src.B[3];      
 	                                     Buf[36]=0;                                   
-	  src.W[0]=(INT16U)(ac_psi*10);        Buf[37]=src.B[0];  Buf[38]=src.B[1];     /*[º½Ïò]*/
-    src.D[0]=(INT16S)(ss_Gps.freq);      Buf[39]=src.B[0];                        /*[gpsÖ¡ÆµÂÊ]*/
-	  src.DW  =(INT32S)(H_acc*1000);       Buf[40]=src.B[0];  Buf[41]=src.B[1];     //Ë®Æ½Îó²î
+	  src.W[0]=(INT16U)(ac_psi*10);        Buf[37]=src.B[0];  Buf[38]=src.B[1];     /*[èˆªå‘]*/
+    src.D[0]=(INT16S)(ss_Gps.freq);      Buf[39]=src.B[0];                        /*[gpså¸§é¢‘ç‡]*/
+	  src.DW  =(INT32S)(H_acc*1000);       Buf[40]=src.B[0];  Buf[41]=src.B[1];     //æ°´å¹³è¯¯å·®
                                          Buf[42]=src.B[2];  Buf[43]=src.B[3];  
-    src.DW  =(INT32S)(V_acc*1000);       Buf[44]=src.B[0];  Buf[45]=src.B[1];     //¸ß¶ÈÎó²î
+    src.DW  =(INT32S)(V_acc*1000);       Buf[44]=src.B[0];  Buf[45]=src.B[1];     //é«˜åº¦è¯¯å·®
                                          Buf[46]=src.B[2];  Buf[47]=src.B[3];
                                                                               
 }

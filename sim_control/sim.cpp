@@ -1,4 +1,4 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include <stdio.h>
 #include "Sim.h"
 #include "yn.h"
@@ -34,7 +34,7 @@ double Psi_180(double psi)
 	return psi;
 }
 
-/*·ÉĞĞÆ÷×İÏò¿ØÖÆ*/
+/*é£è¡Œå™¨çºµå‘æ§åˆ¶*/
 void  ctrl_long(void)
 {
 	static  double   KthataPH = 1.6, KthetaIH = 0.50, KthetaDH = -0.2; 
@@ -44,23 +44,23 @@ void  ctrl_long(void)
 	double  deltaH,  theta_pid;
 	/*ac_eng = eng_var;
 	ac_ele = ele_var;*/
-	/********¸ß¶È¿ØÖÆ********/
+	/********é«˜åº¦æ§åˆ¶********/
 	deltaH = Maxmin((height_cmd - ac_height), 0.5, -0.5);
 	H_int += KthetaIH * deltaH * (T * 2);
 	H_int = Maxmin(H_int, 0.5, -0.5);
 	theta_pid = KthataPH * (height_cmd - ac_height)
            	+ H_int + KthetaDH * ac_dH;;
-	/********¸©Ñö½Ç¿ØÖÆ********/
+	/********ä¿¯ä»°è§’æ§åˆ¶********/
 	ac_ele = KeTHETA * (ac_theta * Rad2Deg - theta_var - 0.0);// + KeQ * ac_Q * Rad2Deg
 		//+ KeALPHA * (ac_alpha - alphi_xtrim) * Rad2Deg;
 	ac_ele = Maxmin(ac_ele, 30, -30);
-	/********ËÙ¶È¿ØÖÆ********/
+	/********é€Ÿåº¦æ§åˆ¶********/
 	engine_V += KeIv * (Vt_cmd - ac_vt) * (T * 2);
 	engine_V = Maxmin(engine_V, 50, -50);
 //	ac_eng = engine_var +Kev * (Vt_cmd - ac_vt) + engine_V;
 //	ac_eng = Maxmin(ac_eng, 100, 0);
 }
-/*·ÉĞĞÆ÷ºá²àÏò¿ØÖÆ*/
+/*é£è¡Œå™¨æ¨ªä¾§å‘æ§åˆ¶*/
 void  ctrl_late (void)
 {
 	static double    K_phipsi  =  2.5, KphiZ = 0.00;
@@ -78,7 +78,7 @@ void  ctrl_late (void)
 	ac_rud = Maxmin(ac_rud, 30, -30);
 
 }
-/*·ÉĞĞÆ÷¿ØÖÆÖ¸ÁîÈí»¯*/
+/*é£è¡Œå™¨æ§åˆ¶æŒ‡ä»¤è½¯åŒ–*/
 void  ctrl_cmdSmooth (void)
 {
     static const double    theta_unit = 0.1, 
@@ -186,7 +186,7 @@ void  ctrl_cmdSmooth (void)
 			if (height_var < H_total)    height_var = H_total;
 		}
 }
-/*·ÉĞĞÆ÷×ÅÂ½¿ØÖÆÄ£¿é*/
+/*é£è¡Œå™¨ç€é™†æ§åˆ¶æ¨¡å—*/
 void  ctrl_landingtask(void)
 {
 	switch(step_long){
@@ -194,25 +194,25 @@ void  ctrl_landingtask(void)
 			theta_cmd=2.32;
 			engine_cmd =36;
 			Vt_cmd = 25;
-			height_cmd = 55;    //Æ½·É½ø³¡
+			height_cmd = 55;    //å¹³é£è¿›åœº
 			if(ac_PN >= -1139.6)  step_long++;
 			break;
 		case 1:
 			theta_cmd = -1.2;
 			engine_cmd = 11;
 			Vt_cmd = 22;
-			height_cmd = (-11/tan(1.5/Rad2Deg)-ac_PN)*tan(3.5/ Rad2Deg)+11;    //¶¸ÏÂ»¬:height > 11m
+			height_cmd = (-11/tan(1.5/Rad2Deg)-ac_PN)*tan(3.5/ Rad2Deg)+11;    //é™¡ä¸‹æ»‘:height > 11m
 			if(ac_height <= 11) step_long++;
 			break;
 		case 2:
 			theta_cmd = 4.0;
 			engine_cmd = 0.0;
 			Vt_cmd = 16;
-			height_cmd = -ac_PN * tan(1.5 / Rad2Deg);  //À­Æ®:height < 11m
+			height_cmd = -ac_PN * tan(1.5 / Rad2Deg);  //æ‹‰é£˜:height < 11m
             if(ac_height <= 0) step_long++;
 			break;
 		case 3:
-			flag_Stop=0;  //´¥µØ
+			flag_Stop=0;  //è§¦åœ°
 			break;
 		default:
 			break;	
@@ -223,7 +223,7 @@ void  ctrl_landingtask(void)
 	ctrl_late();
 }
 
-/*·ÉĞĞÆ÷ËÄ±ßº½Â·¿ØÖÆÄ£¿é*/
+/*é£è¡Œå™¨å››è¾¹èˆªè·¯æ§åˆ¶æ¨¡å—*/
 void  ctrl_flytask(void)
 {
 	switch (step_long) {
@@ -232,7 +232,7 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //±±Ïòº½Â·
+		height_cmd = 55;    //åŒ—å‘èˆªè·¯
 		//PE_cmd = 0;
 		if (ac_PN >= 1200) {
 			psi_count++;
@@ -244,7 +244,7 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //¶«Ïòº½Â·
+		height_cmd = 55;    //ä¸œå‘èˆªè·¯
 		//PE_cmd = ac_PE;
 		if (ac_PE >= 430) {
 			psi_count++;
@@ -256,7 +256,7 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //ÄÏÏòº½Â·
+		height_cmd = 55;    //å—å‘èˆªè·¯
 		//PE_cmd = 1569;
 		if (ac_PN <= -1300) {
 			psi_count++;
@@ -268,7 +268,7 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //Î÷Ïòº½Â·
+		height_cmd = 55;    //è¥¿å‘èˆªè·¯
 		//PE_cmd = ac_PE;
 		if (ac_PE <= 330.0) {
 			psi_count++;
@@ -284,7 +284,7 @@ void  ctrl_flytask(void)
 	ctrl_late();
 }
 
-/*·ÉĞĞÆ÷Ä£ĞÍ½âËãÄ£¿é£¬ÎŞĞè¿´¶®*/
+/*é£è¡Œå™¨æ¨¡å‹è§£ç®—æ¨¡å—ï¼Œæ— éœ€çœ‹æ‡‚*/
 void simu_run(void)
 {
 	static double g=9.81;
@@ -312,7 +312,7 @@ void simu_run(void)
 //	ac_ay=  g*cos(ac_theta)*sin(ac_phi);
 //	ac_az=  g*cos(ac_theta)*cos(ac_phi);
 }
-/*·ÉĞĞÆ÷Ä£ĞÍ½âËã³õÊ¼»¯£¬ÎŞĞè¿´¶®*/
+/*é£è¡Œå™¨æ¨¡å‹è§£ç®—åˆå§‹åŒ–ï¼Œæ— éœ€çœ‹æ‡‚*/
 void simu_init(void)
 {
 	ac_vt=25;         ac_alpha=2.3240/Rad2Deg;   ac_beta=0/Rad2Deg;

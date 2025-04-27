@@ -1,4 +1,4 @@
-#include "init.h"
+ï»¿#include "init.h"
 #include "yn.h"
 #include "hardwares/usart.h"
 #include "navigation_ESKF/psins.hpp"
@@ -22,22 +22,22 @@ int main(void)
 		{
 			Timer5ms=0;
 			
-			/***Sbus ĞÅºÅ»ñÈ¡***/
+			/***Sbus ä¿¡å·è·å–***/
 			SBUS_Rev();
 			
 			/***PWM out***/
 			PWM_sbus(); 
 			
-			/***UBLOX GPSĞÅºÅ»ñÈ¡***/
+			/***UBLOX GPSä¿¡å·è·å–***/
 			TaskUblox();
 			
-			/***IMU ÍÓÂİÒÇ&&¼ÓËÙ¶È¼ÆĞÅºÅ»ñÈ¡***/
+			/***IMU é™€èºä»ª&&åŠ é€Ÿåº¦è®¡ä¿¡å·è·å–***/
 			get_IMU();
 			
-			/***ESKFµ¼º½½âËã***/
+			/***ESKFå¯¼èˆªè§£ç®—***/
 			ESKF();
 			
-			/***µ¼º½ĞÅÏ¢»ñÈ¡£º×ËÌ¬½Ç£¬ËÙ¶È£¬ÏÂ³ÁÂÊ£¬Î»ÖÃ£¬PQR.....***/
+			/***å¯¼èˆªä¿¡æ¯è·å–ï¼šå§¿æ€è§’ï¼Œé€Ÿåº¦ï¼Œä¸‹æ²‰ç‡ï¼Œä½ç½®ï¼ŒPQR.....***/
 			get_flightstate();
 		}
 		if(Timer10ms)
@@ -61,7 +61,7 @@ int main(void)
       Ublox_Monitor();
 			/***UBLOX frequency***/
 			
-			/***´®¿Úµ÷ÊÔ***/
+			/***ä¸²å£è°ƒè¯•***/
 //			len=sprintf((char*)str,"Attitude: roll=%f,pitch=%f,yaw=%f\r\n",ac_phi*Rad2Deg,ac_theta*Rad2Deg,ac_psi*Rad2Deg);
 			len=sprintf((char*)str,"Sbus_freq: %d\r\n", ss_SBUS.freq);
 			len+=sprintf((char*)str+len,"att: %f %f %f\r\n", ac_phi*Rad2Deg, ac_theta*Rad2Deg, ac_psi*Rad2Deg);
@@ -73,23 +73,23 @@ int main(void)
 			len+=sprintf((char*)str+len,"Gyro: %f,%f,%f\r\n",ac_P*Rad2Deg,ac_Q*Rad2Deg,ac_R*Rad2Deg);
 			len+=sprintf((char*)str+len,"Accel: %f,%f,%f\r\n",ac_ax,ac_ay,ac_az);
 		//	Usart_Tx(COM7,str,len);
-			/***´®¿Úµ÷ÊÔ***/
+			/***ä¸²å£è°ƒè¯•***/
 			
-			TELE_TxMan();  //Ò£²âÏÂĞĞ
+			TELE_TxMan();  //é¥æµ‹ä¸‹è¡Œ
 		}
 		if(Timer1s)
 		{
 			Timer1s=0;
 			
-			/***X7 ÎÂ¶È***/
+			/***X7 æ¸©åº¦***/
 			BMI088_TempAsk();
-			/***X7 ÎÂ¶È***/
+			/***X7 æ¸©åº¦***/
 			
-			/***LEDÉÁË¸***/
+			/***LEDé—ªçƒ***/
 			set_pin(GPIOI,7,(s++)&1);
-			/***LEDÉÁË¸***/
+			/***LEDé—ªçƒ***/
 			
-			/***¿´ÃÅ¹·***/
+			/***çœ‹é—¨ç‹—***/
 			WD_cnt++;
 		}
 	}

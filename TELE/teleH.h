@@ -1,4 +1,4 @@
-#ifndef _TELE_H_
+ï»¿#ifndef _TELE_H_
 #define _TELE_H_
 
 #ifdef __cplusplus
@@ -8,23 +8,23 @@
 #include "yn.h"
 		
 extern  unsigned char    YEAR,MONTH,DAY,HOUR,MIN,SEC;
-extern  unsigned char           RemoteCmd,                 /*[ÀëÉ¢Ò£¿ØÖ¸Áî]*/
-                       RemoteCode;                /*[Ò£¿ØÖ¸Áî»Ø±¨]*/
-extern  unsigned char           echo_tele;                 /*[»ØÀ¡±êÖ¾]*/
+extern  unsigned char           RemoteCmd,                 /*[ç¦»æ•£é¥æ§æŒ‡ä»¤]*/
+                       RemoteCode;                /*[é¥æ§æŒ‡ä»¤å›æŠ¥]*/
+extern  unsigned char           echo_tele;                 /*[å›é¦ˆæ ‡å¿—]*/
 extern  SensorStruc         tele;
 
-void        TELE_TaskRx(void);     /*[Ò£¿ØºÍµØÃæ¼ì²âÉÏĞĞÁ´½ÓÊÕÈÎÎñ][Task]*/
+void        TELE_TaskRx(void);     /*[é¥æ§å’Œåœ°é¢æ£€æµ‹ä¸Šè¡Œé“¾æ¥æ”¶ä»»åŠ¡][Task]*/
 
-void        TELE_RxMan(unsigned char Buf[]);       /*[¶ÔÒ£¿ØÊı¾İÖ¡½øĞĞ×ÛºÏ´¦Àí]*/
-void        TELE_Monitor(void);           /*[Ò£¿ØÊı¾İÁ´¼à¿Ø][100msµ÷¶È]*/
+void        TELE_RxMan(unsigned char Buf[]);       /*[å¯¹é¥æ§æ•°æ®å¸§è¿›è¡Œç»¼åˆå¤„ç†]*/
+void        TELE_Monitor(void);           /*[é¥æ§æ•°æ®é“¾ç›‘æ§][100msè°ƒåº¦]*/
 
-void        TELE_TaskTx(void);            /*[Ò£²âºÍµØÃæ¼ì²âÏÂĞĞ·¢ËÍÈÎÎñ][Task]*/
-void        TELE_TxMan(void);             /*[Ò£²âÊı¾İÖ¡·¢ËÍ¹ÜÀí]*/
-void        TELE_FrameA (unsigned char Buf[]);      /*[Ò£²âÊı¾İAÖ¡]*/
-void        TELE_FrameB(unsigned char Buf[]);      /*[Ò£²âÊı¾İBÖ¡]*/
+void        TELE_TaskTx(void);            /*[é¥æµ‹å’Œåœ°é¢æ£€æµ‹ä¸‹è¡Œå‘é€ä»»åŠ¡][Task]*/
+void        TELE_TxMan(void);             /*[é¥æµ‹æ•°æ®å¸§å‘é€ç®¡ç†]*/
+void        TELE_FrameA (unsigned char Buf[]);      /*[é¥æµ‹æ•°æ®Aå¸§]*/
+void        TELE_FrameB(unsigned char Buf[]);      /*[é¥æµ‹æ•°æ®Bå¸§]*/
 
-void        Ublox_Monitor(); /*Ublox GPSÆµÂÊ¼ÆËã*/
-void        TaskUblox();  /*Ublox GPSĞÅºÅ»ñÈ¡*/
+void        Ublox_Monitor(); /*Ublox GPSé¢‘ç‡è®¡ç®—*/
+void        TaskUblox();  /*Ublox GPSä¿¡å·è·å–*/
 
 
 typedef struct {

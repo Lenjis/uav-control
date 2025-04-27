@@ -1,4 +1,4 @@
-#ifndef _SIM_H_
+ï»¿#ifndef _SIM_H_
 #define _SIM_H_
 
 #ifdef __cplusplus
@@ -15,7 +15,7 @@ typedef unsigned int	  UINT;
 void  ctrl_flytask(void);
 void  simu_init(void);
  
-//---[7]---·É»úÄ£ĞÍ·ÂÕæ²ÎÊı¶¨Òå
+//---[7]---é£æœºæ¨¡å‹ä»¿çœŸå‚æ•°å®šä¹‰
 //
 //extern double H_int, Ivt, DdH, Iphi, Omega, deltaH, initposPN, initposPE, Pos_forward;
 //extern double theta_cmd, theta_var, phi_cmd, phi_var, H_cmd, H_var, 
