@@ -1,0 +1,9 @@
+{
+    "C_Cpp.default.includePath": [
+        ".\\include",
+        ".\\include\\**"
+    ],
+    "files.associations": {
+        "algorithm": "c"
+    }
+}
