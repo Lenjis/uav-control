@@ -1,3 +1,3 @@
 # UAV Control
 
-UAV flight control and tasks for CUAV X7+ flight controller (ARM)
+UAV flight control codes for CUAV X7+ flight controller (ARM)
