@@ -4,6 +4,23 @@
         ".\\include\\**"
     ],
     "files.associations": {
-        "algorithm": "c"
-    }
+        "**/0/*": "OpenFOAM",
+        "**/constant/g": "OpenFOAM",
+        "*Dict": "OpenFOAM",
+        "*Properties": "OpenFOAM",
+        "fvSchemes": "OpenFOAM",
+        "fvSolution": "OpenFOAM",
+        "algorithm": "c",
+        "yn.h": "c",
+        "sbus.h": "c",
+        "data_struct.h": "c",
+        "stdint.h": "c",
+        "stdbool.h": "c"
+    },
+    "C_Cpp.default.cppStandard": "gnu++20",
+    "C_Cpp.default.cStandard": "gnu23",
+    "C_Cpp.default.systemIncludePath": [
+        "C:\\Program Files\\Keil_v5\\ARM\\ARMCC\\include\\"
+    ],
+    "C_Cpp.formatting": "clangFormat"
 }

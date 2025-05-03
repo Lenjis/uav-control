@@ -65,7 +65,6 @@ void LAW_Out(void)
         pwm_set(i, MPWMOUT[i].pwmhi * 5); // MpwmOut(i);
 }
 
-/*????????*/
 void LAW_ParmInit(void)
 {
     PWMout[0].min = -20.0f;

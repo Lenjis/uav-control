@@ -1,11 +1,12 @@
 #ifndef _data_struct_
 #define _data_struct_
 
-#ifdef  __cplusplus
-    extern "C" {
+#ifdef __cplusplus
+extern "C"
+{
 #endif
 #include <stdint.h>
-			#include <stdbool.h>
+#include <stdbool.h>
 
 #define ANALOG_BIT_ERROR_COUNT_LIMIT 1000 // analog hardware soft bit limits
 #define COM_BIT_ERROR_COUNT_LIMIT    1000 // com soft bit limits

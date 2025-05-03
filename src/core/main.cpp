@@ -7,6 +7,7 @@
 
 unsigned char s = 0, len = 0;
 unsigned char str[200];
+
 int main(void)
 {
 	init();
@@ -71,7 +72,7 @@ int main(void)
 
 			len += sprintf((char *)str + len, "Gyro: %f,%f,%f\r\n", ac_P * Rad2Deg, ac_Q * Rad2Deg, ac_R * Rad2Deg);
 			len += sprintf((char *)str + len, "Accel: %f,%f,%f\r\n", ac_ax, ac_ay, ac_az);
-			// Usart_Tx(COM7,str,len);
+			//Usart_Tx(COM7,str,len);
 			/***串口调试***/
 
 			TELE_TxMan(); // 遥测下行
