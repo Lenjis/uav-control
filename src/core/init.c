@@ -10,6 +10,7 @@
 #include "pwm.h"
 // #include "get_gps.h"
 unsigned short WD_cnt;
+
 void init(void)
 {
 	clock_init();

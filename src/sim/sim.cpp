@@ -76,146 +76,181 @@ void  ctrl_late (void)
 	ac_ail = Maxmin(ac_ail, 30, -30);
 	ac_rud = KrudR * ac_R + K_rudbeta * ac_beta;
 	ac_rud = Maxmin(ac_rud, 30, -30);
-
 }
 /*飞行器控制指令软化*/
-void  ctrl_cmdSmooth (void)
+void ctrl_cmdSmooth(void)
 {
-    static const double    theta_unit = 0.1, 
-                           phi_unit   = 1.0,
-		                       ele_unit = 0.1,
-		                       ail_unit = 0.1,
-		                       rud_unit = 0.1,
-	                         eng_unit = 0.1,
-	                         vt_unit = 0.1,
-	                         H_unit = 0.1;
-                 double    theta_total, 
-                           phi_total,
-					                 psi_total,
-					                 ele_total,
-								           ail_total,
-								           rud_total,
-				                   eng_total,
-					                 vt_total,
-					                 H_total;
-				
-    /*---[smoothing theta_cmd]---*/
-    theta_total = theta_cmd;
-    if (theta_var < theta_total) {
-        theta_var += theta_unit;
-        if (theta_var > theta_total)    theta_var = theta_total;
-    }
-    else {
-        theta_var -= theta_unit;
-        if (theta_var < theta_total)    theta_var = theta_total;
-    }
+	static const double theta_unit = 0.1,
+						phi_unit = 1.0,
+						ele_unit = 0.1,
+						ail_unit = 0.1,
+						rud_unit = 0.1,
+						eng_unit = 0.1,
+						vt_unit = 0.1,
+						H_unit = 0.1;
+	double theta_total,
+		phi_total,
+		psi_total,
+		ele_total,
+		ail_total,
+		rud_total,
+		eng_total,
+		vt_total,
+		H_total;
 
-    /*---[smoothing phi_cmd]---*/
-    phi_total = gama_cmd;
-    if (gama_var < phi_total) {
-        gama_var += phi_unit;
-        if (gama_var > phi_total)       gama_var = phi_total;
-    }
-    else {
-        gama_var -= phi_unit;
-        if (gama_var < phi_total)       gama_var = phi_total;
-    }
-		/*---[smoothing ele_cmd]---*/
-		ele_total = ac_ele;
-		if (ele_var < ele_total) {
-			ele_var += ele_unit;
-			if (ele_var > ele_total)    ele_var = ele_total;
-		}
-		else {
-			ele_var -= ele_unit;
-			if (ele_var < ele_total)    ele_var = ele_total;
-		}
+	/*---[smoothing theta_cmd]---*/
+	theta_total = theta_cmd;
+	if (theta_var < theta_total)
+	{
+		theta_var += theta_unit;
+		if (theta_var > theta_total)
+			theta_var = theta_total;
+	}
+	else
+	{
+		theta_var -= theta_unit;
+		if (theta_var < theta_total)
+			theta_var = theta_total;
+	}
 
-		/*---[smoothing ail_cmd]---*/
-		ail_total = ac_ail;
-		if (ail_var < ail_total) {
-			ail_var += ail_unit;
-			if (ail_var > ail_total)    ail_var = ail_total;
-		}
-		else {
-			ail_var -= ail_unit;
-			if (ail_var < ail_total)    ail_var = ail_total;
-		}
-		
-		/*---[smoothing ele_cmd]---*/
-		rud_total = ac_rud;
-		if (rud_var < rud_total) {
-			rud_var += rud_unit;
-			if (rud_var > rud_total)    rud_var = rud_total;
-		}
-		else {
-			rud_var -= rud_unit;
-			if (rud_var < rud_total)    rud_var = rud_total;
-		}
-		
-		/*---[smoothing eng_cmd]---*/
-		eng_total = engine_cmd;
-		if (engine_var < eng_total) {
-			engine_var += eng_unit;
-			if (engine_var > eng_total)    engine_var = eng_total;
-		}
-		else {
-			engine_var -= eng_unit;
-			if (engine_var < eng_total)    engine_var = eng_total;
-		}
+	/*---[smoothing phi_cmd]---*/
+	phi_total = gama_cmd;
+	if (gama_var < phi_total)
+	{
+		gama_var += phi_unit;
+		if (gama_var > phi_total)
+			gama_var = phi_total;
+	}
+	else
+	{
+		gama_var -= phi_unit;
+		if (gama_var < phi_total)
+			gama_var = phi_total;
+	}
+	/*---[smoothing ele_cmd]---*/
+	ele_total = ac_ele;
+	if (ele_var < ele_total)
+	{
+		ele_var += ele_unit;
+		if (ele_var > ele_total)
+			ele_var = ele_total;
+	}
+	else
+	{
+		ele_var -= ele_unit;
+		if (ele_var < ele_total)
+			ele_var = ele_total;
+	}
 
-		/*---[smoothing vt_cmd]---*/
-		vt_total = Vt_cmd;
-		if (Vt_var < vt_total) {
-			Vt_var += vt_unit;
-			if (Vt_var > vt_total)    Vt_var = vt_total;
-		}
-		else {
-			Vt_var -= vt_unit;
-			if (Vt_var < vt_total)    Vt_var = vt_total;
-		}
+	/*---[smoothing ail_cmd]---*/
+	ail_total = ac_ail;
+	if (ail_var < ail_total)
+	{
+		ail_var += ail_unit;
+		if (ail_var > ail_total)
+			ail_var = ail_total;
+	}
+	else
+	{
+		ail_var -= ail_unit;
+		if (ail_var < ail_total)
+			ail_var = ail_total;
+	}
 
-		/*---[smoothing H_cmd]---*/
-		H_total = height_cmd;
-		if (height_var < H_total) {
-			height_var += H_unit;
-			if (height_var > H_total)    height_var = H_total;
-		}
-		else {
-			height_var -= H_unit;
-			if (height_var < H_total)    height_var = H_total;
-		}
+	/*---[smoothing ele_cmd]---*/
+	rud_total = ac_rud;
+	if (rud_var < rud_total)
+	{
+		rud_var += rud_unit;
+		if (rud_var > rud_total)
+			rud_var = rud_total;
+	}
+	else
+	{
+		rud_var -= rud_unit;
+		if (rud_var < rud_total)
+			rud_var = rud_total;
+	}
+
+	/*---[smoothing eng_cmd]---*/
+	eng_total = engine_cmd;
+	if (engine_var < eng_total)
+	{
+		engine_var += eng_unit;
+		if (engine_var > eng_total)
+			engine_var = eng_total;
+	}
+	else
+	{
+		engine_var -= eng_unit;
+		if (engine_var < eng_total)
+			engine_var = eng_total;
+	}
+
+	/*---[smoothing vt_cmd]---*/
+	vt_total = Vt_cmd;
+	if (Vt_var < vt_total)
+	{
+		Vt_var += vt_unit;
+		if (Vt_var > vt_total)
+			Vt_var = vt_total;
+	}
+	else
+	{
+		Vt_var -= vt_unit;
+		if (Vt_var < vt_total)
+			Vt_var = vt_total;
+	}
+
+	/*---[smoothing H_cmd]---*/
+	H_total = height_cmd;
+	if (height_var < H_total)
+	{
+		height_var += H_unit;
+		if (height_var > H_total)
+			height_var = H_total;
+	}
+	else
+	{
+		height_var -= H_unit;
+		if (height_var < H_total)
+			height_var = H_total;
+	}
 }
 /*飞行器着陆控制模块*/
-void  ctrl_landingtask(void)
+void ctrl_landingtask(void)
 {
-	switch(step_long){
-		case 0:
-			theta_cmd=2.32;
-			engine_cmd =36;
-			Vt_cmd = 25;
-			height_cmd = 55;    //平飞进场
-			if(ac_PN >= -1139.6)  step_long++;
-			break;
-		case 1:
-			theta_cmd = -1.2;
-			engine_cmd = 11;
-			Vt_cmd = 22;
-			height_cmd = (-11/tan(1.5/Rad2Deg)-ac_PN)*tan(3.5/ Rad2Deg)+11;    //陡下滑:height > 11m
-			if(ac_height <= 11) step_long++;
-			break;
-		case 2:
-			theta_cmd = 4.0;
-			engine_cmd = 0.0;
-			Vt_cmd = 16;
-			height_cmd = -ac_PN * tan(1.5 / Rad2Deg);  //拉飘:height < 11m
-            if(ac_height <= 0) step_long++;
-			break;
-		case 3:
-			flag_Stop=0;  //触地
-			break;
-		default:
-			break;	
+	switch (step_long)
+	{
+	case 0:
+		theta_cmd = 2.32;
+		engine_cmd = 36;
+		Vt_cmd = 25;
+		height_cmd = 55; // 平飞进场
+		if (ac_PN >= -1139.6)
+			step_long++;
+		break;
+	case 1:
+		theta_cmd = -1.2;
+		engine_cmd = 11;
+		Vt_cmd = 22;
+		height_cmd = (-11 / tan(1.5 / Rad2Deg) - ac_PN) * tan(3.5 / Rad2Deg) + 11; // 陡下滑:height > 11m
+		if (ac_height <= 11)
+			step_long++;
+		break;
+	case 2:
+		theta_cmd = 4.0;
+		engine_cmd = 0.0;
+		Vt_cmd = 16;
+		height_cmd = -ac_PN * tan(1.5 / Rad2Deg); // 拉飘:height < 11m
+		if (ac_height <= 0)
+			step_long++;
+		break;
+	case 3:
+		flag_Stop = 0; // 触地
+		break;
+	default:
+		break;
 	}
 
 	ctrl_cmdSmooth();
@@ -224,17 +259,19 @@ void  ctrl_landingtask(void)
 }
 
 /*飞行器四边航路控制模块*/
-void  ctrl_flytask(void)
+void ctrl_flytask(void)
 {
-	switch (step_long) {
+	switch (step_long)
+	{
 	case 0:
 		theta_cmd = 2.32;
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //北向航路
-		//PE_cmd = 0;
-		if (ac_PN >= 1200) {
+		height_cmd = 55; // 北向航路
+		// PE_cmd = 0;
+		if (ac_PN >= 1200)
+		{
 			psi_count++;
 			step_long++;
 		}
@@ -244,9 +281,10 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //东向航路
-		//PE_cmd = ac_PE;
-		if (ac_PE >= 430) {
+		height_cmd = 55; // 东向航路
+		// PE_cmd = ac_PE;
+		if (ac_PE >= 430)
+		{
 			psi_count++;
 			step_long++;
 		}
@@ -256,9 +294,10 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //南向航路
-		//PE_cmd = 1569;
-		if (ac_PN <= -1300) {
+		height_cmd = 55; // 南向航路
+		// PE_cmd = 1569;
+		if (ac_PN <= -1300)
+		{
 			psi_count++;
 			step_long++;
 		}
@@ -268,9 +307,10 @@ void  ctrl_flytask(void)
 		psi_cmd = Psi_360(psi_count * 90);
 		engine_cmd = 36.23;
 		Vt_cmd = 25;
-		height_cmd = 55;    //西向航路
-		//PE_cmd = ac_PE;
-		if (ac_PE <= 330.0) {
+		height_cmd = 55; // 西向航路
+		// PE_cmd = ac_PE;
+		if (ac_PE <= 330.0)
+		{
 			psi_count++;
 			step_long = 0;
 		}
