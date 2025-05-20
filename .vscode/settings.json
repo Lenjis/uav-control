@@ -22,5 +22,4 @@
     "C_Cpp.default.systemIncludePath": [
         "C:\\Program Files\\Keil_v5\\ARM\\ARMCC\\include\\"
     ],
-    "C_Cpp.formatting": "clangFormat"
 }
