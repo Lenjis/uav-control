@@ -163,6 +163,7 @@ void ctrl_rectangular(void) {
     if(gama_cmd < -45) gama_cmd = -45;
     theta_cmd = THETA_LEVEL;
     height_cmd = 50;
+		
     ctrl_cmdSmooth();
     ctrl_alt();
     ctrl_long();
@@ -368,7 +369,7 @@ void simu_init(void) {
     T = sim_step / 1000.0f; 	t = 0;
     //aircraft= model6dof;
     alphi_xtrim = 2.32 / Rad2Deg;
-    ac_ele = -0.2559;     ac_ail = -1.58906625570490e-14;
-    ac_rud = 1.93814906058248e-14;       ac_eng = 36.23;
+    ac_ele = -0.2559;     ac_ail = 0;
+    ac_rud = 0;       ac_eng = 36.23;
     engine_var = ac_eng;
 }

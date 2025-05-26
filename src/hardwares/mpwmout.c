@@ -30,8 +30,8 @@ void LAW_Act(void) {
     PWMout[2].val = MidVal(engine_var, PWMout[2].min, PWMout[2].max); // engine
     PWMout[3].val = MidVal(rud_var, PWMout[3].min, PWMout[3].max);    // rudder
 
-    // PWMout[0].vol = PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
-    PWMout[0].vol = -PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
+    PWMout[0].vol = PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
+    // PWMout[0].vol = -PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
     // PWMout[1].vol = PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset; // elevator
     PWMout[1].vol = -PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset; // elevator
     PWMout[2].vol = PWMout[2].ratio * PWMout[2].val + 1.0 + PWMout[2].offset;  // engine
