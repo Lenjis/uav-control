@@ -1,4 +1,4 @@
-﻿#include "yn.h"
+#include "yn.h"
 #include "Sbus.h"
 #include "data_struct.h"
 #include <stdint.h>
@@ -103,14 +103,14 @@ void PWM_sbus(void) {
     unsigned char idx;
     static unsigned char cnt_safe = 0, cnt_auto = 0, switch_cnt = 0;
     static unsigned char cnt_V2L = 0, cnt_L2V = 0;
-
+ 
     for(idx = 0; idx < 16; idx++) {
         PWMin[idx].vol = (float)GetChannel(idx + 1) / 1000.0;
         if(idx != 4)
             PWMin[idx].vol = MidVal(PWMin[idx].vol, 1.0, 2.0);
     }
 
-    if((PWMin[4].vol >= 1.6) && (PWMin[4].vol <= 2.2)) // Safe                   ??C14
+    if((PWMin[4].vol >= 1.6) && (PWMin[4].vol <= 2.2)) // Safe
     {
         cnt_safe++;
         cnt_auto = 0;
@@ -129,7 +129,7 @@ void PWM_sbus(void) {
         on_safe = true;
     }
     else if(cnt_auto >= 3) {
-        if(on_safe) {
+        if(on_safe) { // Auto启动时初始化
             tag_SaveEleSwitch = true;
             tag_SaveEngSwitch = true;
             tag_opt = 0;
@@ -139,10 +139,10 @@ void PWM_sbus(void) {
 
             height_cmd = alt_gps;
             height_var = alt_gps;
-            //	step_long=0;  ??????case??
+            //	step_long=0;
             ac_ail = PWMin[0].val;
             ac_ele = PWMin[1].val;
-            //	ac_eng=40;  ????
+            //	ac_eng=40;
         }
         on_safe = false;
     }

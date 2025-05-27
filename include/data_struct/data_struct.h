@@ -10,14 +10,14 @@ extern "C"
 
 #define ANALOG_BIT_ERROR_COUNT_LIMIT 1000 // analog hardware soft bit limits
 #define COM_BIT_ERROR_COUNT_LIMIT    1000 // com soft bit limits
+#define NUM_AXIS 3
+#define Rad2Deg 57.295779513
+#define Deg2Rad 1/Rad2Deg			
 
     typedef unsigned char   BYTE;
     typedef unsigned short  WORD;
     typedef unsigned long   DWORD;
     typedef float real;
-#define NUM_AXIS 3
-#define Rad2Deg 57.295779513
-#define Deg2Rad 1/Rad2Deg			
     typedef struct {
         unsigned          char         gpsFixType;    // GPS solution type: invalid, spp, dgps, spp, rtk_float, rtk_fix
         unsigned          char         numSatellites;

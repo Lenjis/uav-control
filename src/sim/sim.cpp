@@ -104,7 +104,7 @@ void ctrl_speed() {
 
     ac_eng += du;
 
-    // ac_eng = Maxmin(ac_eng, 50, -50);
+    // ac_eng = Maxmin(ac_eng, 0, 100);
 
     speed_e2 = speed_e1;
     speed_e1 = speed;
@@ -136,11 +136,11 @@ void ctrl_rectangular(void) {
     switch(step_long) {
     case 0:
         psi_cmd = 0;
-        if(ac_PN >= 500) step_long++;
+        if(ac_PN >= 10) step_long++;
         break;
     case 1:
         psi_cmd = 90;
-        if(ac_PE >= 500) step_long++;
+        if(ac_PE >= 10) step_long++;
         break;
     case 2:
         psi_cmd = 180;
@@ -154,7 +154,8 @@ void ctrl_rectangular(void) {
         break;
     }
 
-    if(t > 200) flag_Stop = 0;
+    // if(t > 200) flag_Stop = 0;
+    Vt_cmd = 20;  // 巡航速度
     dpsi = psi_cmd - ac_psi * Rad2Deg;
     while(dpsi > 180) dpsi = dpsi - 360;
     while(dpsi < -180) dpsi = dpsi + 360;
@@ -162,8 +163,8 @@ void ctrl_rectangular(void) {
     if(gama_cmd > 45) gama_cmd = 45;
     if(gama_cmd < -45) gama_cmd = -45;
     theta_cmd = THETA_LEVEL;
-    height_cmd = 50;
-		
+    // height_cmd = 50;
+
     ctrl_cmdSmooth();
     ctrl_alt();
     ctrl_long();
@@ -220,7 +221,7 @@ void ctrl_cmdSmooth(void) {
         vt_unit = 0.1, H_unit = 0.1;
     double theta_total, phi_total, psi_total,
         ele_total, ail_total, rud_total, eng_total,
-        vt_total, H_total;
+        vt_total, height_total;
 
     /*---[smoothing theta_cmd]---*/
     theta_total = theta_cmd;
@@ -312,17 +313,17 @@ void ctrl_cmdSmooth(void) {
             Vt_var = vt_total;
     }
 
-    /*---[smoothing H_cmd]---*/
-    H_total = height_cmd;
-    if(height_var < H_total) {
+    /*---[smoothing height_cmd]---*/
+    height_total = height_cmd;
+    if(height_var < height_total) {
         height_var += H_unit;
-        if(height_var > H_total)
-            height_var = H_total;
+        if(height_var > height_total)
+            height_var = height_total;
     }
     else {
         height_var -= H_unit;
-        if(height_var < H_total)
-            height_var = H_total;
+        if(height_var < height_total)
+            height_var = height_total;
     }
 }
 

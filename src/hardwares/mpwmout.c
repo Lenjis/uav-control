@@ -63,17 +63,17 @@ void LAW_Out(void) {
 }
 
 void LAW_ParmInit(void) {
-    PWMout[0].min = -20.0f;
-    PWMout[0].max = 20.0f; /*[ailerion]*/
-    PWMout[1].min = -18.5f;
-    PWMout[1].max = 18.5f; /*[elevator]*/
-    PWMout[2].min = 0.0f;
-    PWMout[2].max = 100.0f; /*[engine]*/
-    PWMout[3].min = -22.0f;
-    PWMout[3].max = 22.0f; /*[rudder]*/
+    PWMout[0].min = -20.0f;         /*[ailerion]*/
+    PWMout[0].max = 20.0f;
+    PWMout[1].min = -18.5f;         /*[elevator]*/
+    PWMout[1].max = 18.5f;
+    PWMout[2].min = 0.0f;           /*[engine]*/
+    PWMout[2].max = 100.0f;
+    PWMout[3].min = -22.0f;         /*[rudder]*/
+    PWMout[3].max = 22.0f;
     H_int_max = 5.0f;
     H_int_min = -5.0f;
-    theta_int_max = 4.0f; /*俯仰角积分[-5~+5][deg]*/
+    theta_int_max = 4.0f;           /*俯仰角积分[-5~+5][deg]*/
     theta_int_min = -4.0f;
     PWMin[0].vol = PWMin[1].vol = PWMin[3].vol = PWMin[4].vol = PWMout[5].vol = 1.5;
     PWMin[2].vol = 2.0;
