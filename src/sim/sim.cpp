@@ -163,7 +163,7 @@ void ctrl_rectangular(void) {
     if(gama_cmd > 45) gama_cmd = 45;
     if(gama_cmd < -45) gama_cmd = -45;
     theta_cmd = THETA_LEVEL;
-    // height_cmd = 50;
+    // height_cmd = 50; // hold on alt_gps when switching to auto mode
 
     ctrl_cmdSmooth();
     ctrl_alt();
