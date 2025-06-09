@@ -196,12 +196,12 @@ extern "C"
     } SensorStruc;
 
     typedef union {
-        BYTE    B[4];
-        short   D[2];
-        WORD    W[2];
-        long    DW;
-        unsigned long UDW;
-        float   f;
+        BYTE    B[4];           // 1 byte
+        short   D[2];           // 2 bytes
+        WORD    W[2];           // 2 bytes
+        long    DW;             // 4 bytes
+        unsigned long UDW;      // 4 bytes
+        float   f;              // 4 bytes
     } dWordStruc;
 
 #ifdef  __cplusplus

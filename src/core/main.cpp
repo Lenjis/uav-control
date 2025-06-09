@@ -7,6 +7,7 @@
 
 unsigned char s = 0, len = 0;
 unsigned char str[200];
+float runtime = 0;
 
 int main(void) {
     init();
@@ -41,12 +42,14 @@ int main(void) {
             Timer10ms = 0;
             LAW_Act();
             LAW_Out();
+            runtime += 0.1;
+            /***flight task***/
+            ctrl_rectangular();
+            // ctrl_level();
+            // ctrl_approach();
         }
         if(Timer100ms) {
             Timer100ms = 0;
-
-            /***flight task***/
-            ctrl_rectangular();
 
             /***Sbus frequency***/
             SBUS_Monitor();
@@ -65,10 +68,10 @@ int main(void) {
             len += sprintf((char*)str + len, "AP_height: %f\r\n", AP_height);
             len += sprintf((char*)str + len, "Gyro: %f,%f,%f\r\n", ac_P * Rad2Deg, ac_Q * Rad2Deg, ac_R * Rad2Deg);
             len += sprintf((char*)str + len, "Accel: %f,%f,%f\r\n", ac_ax, ac_ay, ac_az);
-            Usart_Tx(COM7, str, len);
+            // Usart_Tx(COM7, str, len);
             /***串口调试***/
 
-            // TELE_TxMan(); // 遥测下行
+            TELE_TxMan(); // 遥测下行
         }
         if(Timer1s) {
             Timer1s = 0;

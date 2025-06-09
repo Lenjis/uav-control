@@ -38,24 +38,24 @@ void SBUS_init(void) {
 }
 
 void SBUS_Decode(unsigned char buffer[]) {
-	unsigned char idx;
-	uint16_t h = 0;
-	RC_channels[0]  = ((buffer[1]    |buffer[2]<<8)                 & 0x07FF);
-	RC_channels[1]  = ((buffer[2]>>3 |buffer[3]<<5)                 & 0x07FF);
-	RC_channels[2]  = ((buffer[3]>>6 |buffer[4]<<2 |buffer[5]<<10)  & 0x07FF);
-	RC_channels[3]  = ((buffer[5]>>1 |buffer[6]<<7)                 & 0x07FF);
-	RC_channels[4]  = ((buffer[6]>>4 |buffer[7]<<4)                 & 0x07FF);
-	RC_channels[5]  = ((buffer[7]>>7 |buffer[8]<<1 |buffer[9]<<9)   & 0x07FF);
-	RC_channels[6]  = ((buffer[9]>>2 |buffer[10]<<6)                & 0x07FF);
-	RC_channels[7]  = ((buffer[10]>>5|buffer[11]<<3)                & 0x07FF);
-	RC_channels[8]  = ((buffer[12]   |buffer[13]<<8)                & 0x07FF);
-	RC_channels[9]  = ((buffer[13]>>3|buffer[14]<<5)                & 0x07FF);
-	RC_channels[10] = ((buffer[14]>>6|buffer[15]<<2|buffer[16]<<10) & 0x07FF);
-	RC_channels[11] = ((buffer[16]>>1|buffer[17]<<7)                & 0x07FF);
-	RC_channels[12] = ((buffer[17]>>4|buffer[18]<<4)                & 0x07FF);
-	RC_channels[13] = ((buffer[18]>>7|buffer[19]<<1|buffer[20]<<9)  & 0x07FF);
-	RC_channels[14] = ((buffer[20]>>2|buffer[21]<<6)                & 0x07FF);
-	RC_channels[15] = ((buffer[21]>>5|buffer[22]<<3)                & 0x07FF);
+    unsigned char idx;
+    uint16_t h = 0;
+    RC_channels[0] = ((buffer[1] | buffer[2] << 8) & 0x07FF);
+    RC_channels[1] = ((buffer[2] >> 3 | buffer[3] << 5) & 0x07FF);
+    RC_channels[2] = ((buffer[3] >> 6 | buffer[4] << 2 | buffer[5] << 10) & 0x07FF);
+    RC_channels[3] = ((buffer[5] >> 1 | buffer[6] << 7) & 0x07FF);
+    RC_channels[4] = ((buffer[6] >> 4 | buffer[7] << 4) & 0x07FF);
+    RC_channels[5] = ((buffer[7] >> 7 | buffer[8] << 1 | buffer[9] << 9) & 0x07FF);
+    RC_channels[6] = ((buffer[9] >> 2 | buffer[10] << 6) & 0x07FF);
+    RC_channels[7] = ((buffer[10] >> 5 | buffer[11] << 3) & 0x07FF);
+    RC_channels[8] = ((buffer[12] | buffer[13] << 8) & 0x07FF);
+    RC_channels[9] = ((buffer[13] >> 3 | buffer[14] << 5) & 0x07FF);
+    RC_channels[10] = ((buffer[14] >> 6 | buffer[15] << 2 | buffer[16] << 10) & 0x07FF);
+    RC_channels[11] = ((buffer[16] >> 1 | buffer[17] << 7) & 0x07FF);
+    RC_channels[12] = ((buffer[17] >> 4 | buffer[18] << 4) & 0x07FF);
+    RC_channels[13] = ((buffer[18] >> 7 | buffer[19] << 1 | buffer[20] << 9) & 0x07FF);
+    RC_channels[14] = ((buffer[20] >> 2 | buffer[21] << 6) & 0x07FF);
+    RC_channels[15] = ((buffer[21] >> 5 | buffer[22] << 3) & 0x07FF);
 }
 
 int GetChannel(int channel) {
@@ -103,7 +103,7 @@ void PWM_sbus(void) {
     unsigned char idx;
     static unsigned char cnt_safe = 0, cnt_auto = 0, switch_cnt = 0;
     static unsigned char cnt_V2L = 0, cnt_L2V = 0;
- 
+
     for(idx = 0; idx < 16; idx++) {
         PWMin[idx].vol = (float)GetChannel(idx + 1) / 1000.0;
         if(idx != 4)
@@ -129,7 +129,7 @@ void PWM_sbus(void) {
         on_safe = true;
     }
     else if(cnt_auto >= 3) {
-        if(on_safe) { // Auto启动时初始化
+        if(on_safe) { // Auto启动初始化
             tag_SaveEleSwitch = true;
             tag_SaveEngSwitch = true;
             tag_opt = 0;
@@ -139,10 +139,16 @@ void PWM_sbus(void) {
 
             height_cmd = alt_gps;
             height_var = alt_gps;
-            //	step_long=0;
-            ac_ail = PWMin[0].val;
-            ac_ele = PWMin[1].val;
-            //	ac_eng=40;
+            step_long = 0;
+            engine_var = 55;
+            ail_var = PWMin[0].val;
+            ele_var = PWMin[1].val;
+            engine_var = PWMin[2].val;
+
+            H_i = 0;
+            theta_i = 0;
+            gama_int = 0;
+            psi_hmr = ac_psi;
         }
         on_safe = false;
     }

@@ -5,10 +5,10 @@
 extern "C" {
 #endif
 
-#define ac_rud 	rud_var      //方向舵
-#define ac_eng  engine_var   //油门
-#define ac_ail  ail_var      //副翼舵
-#define ac_ele  ele_var      //升降舵
+// #define ac_rud 	rud_var      //方向舵
+// #define ac_eng  engine_var   //油门
+// #define ac_ail  ail_var      //副翼舵
+// #define ac_ele  ele_var      //升降舵
 
 /*********状态变量定义 simu state define*********/
 extern float ac_theta, ac_phi, ac_psi;                                        //attitude 姿态角
@@ -32,11 +32,12 @@ extern float ele_var, ail_var, rud_var;                                       //
 extern float ail_trim, ele_trim, rud_trim, eng_trim;                          //初始平飞配平值
 extern float psi_cmd;                                                         //给定航向
 
-extern float theta_int, theta_int_min, theta_int_max;                         //俯仰角控制积分，上下限幅
+extern float theta_i, theta_int_min, theta_int_max;                         //俯仰角控制积分，上下限幅
 extern float gama_int, gama_int_min, gama_int_max;                            //滚转角控制积分，上下限幅
-extern float H_int, H_int_min, H_int_max;                                     //高度控制积分，上下限幅
+extern float H_i, H_i_min, H_i_max;                                           //高度控制积分，上下限幅
 extern float KpV, IpV, engine_V, theta_V;                                     //空速控制增益，油门积分，俯仰角积分
-extern float Igama;                                                           //滚转角控制积分           
+extern float Vt_int;
+extern float gama_i;                                                          //滚转角控制积分           
 extern float landing_high;                                                    //着陆起始高度
 
 /***********遥控器控制参数***********/
@@ -64,6 +65,8 @@ extern unsigned char tag_DGPS;
 
 /***********KaWx***********/
 extern unsigned short battery_volt;
+
+extern short step_long;
 
 #ifdef __cplusplus
 }

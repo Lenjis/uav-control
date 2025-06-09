@@ -30,12 +30,12 @@ void LAW_Act(void) {
     PWMout[2].val = MidVal(engine_var, PWMout[2].min, PWMout[2].max); // engine
     PWMout[3].val = MidVal(rud_var, PWMout[3].min, PWMout[3].max);    // rudder
 
-    PWMout[0].vol = PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
-    // PWMout[0].vol = -PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset; // ailerion
-    // PWMout[1].vol = PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset; // elevator
-    PWMout[1].vol = -PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset; // elevator
-    PWMout[2].vol = PWMout[2].ratio * PWMout[2].val + 1.0 + PWMout[2].offset;  // engine
-    PWMout[3].vol = PWMout[3].ratio * PWMout[3].val + 1.5 + PWMout[3].offset;  // rudder
+    PWMout[0].vol = PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset;      // ailerion
+    // PWMout[0].vol = -PWMout[0].ratio * PWMout[0].val + 1.5 + PWMout[0].offset;  // aileron_reverse
+    // PWMout[1].vol = PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset;   // elevator
+    PWMout[1].vol = -PWMout[1].ratio * PWMout[1].val + 1.5 + PWMout[1].offset;     // elevator_reverse
+    PWMout[2].vol = PWMout[2].ratio * PWMout[2].val + 1.0 + PWMout[2].offset;      // engine
+    PWMout[3].vol = PWMout[3].ratio * PWMout[3].val + 1.5 + PWMout[3].offset;      // rudder
 }
 
 void LAW_Task(void) // 40ms 25Hz
@@ -71,8 +71,8 @@ void LAW_ParmInit(void) {
     PWMout[2].max = 100.0f;
     PWMout[3].min = -22.0f;         /*[rudder]*/
     PWMout[3].max = 22.0f;
-    H_int_max = 5.0f;
-    H_int_min = -5.0f;
+    H_i_max = 5.0f;
+    H_i_min = -5.0f;
     theta_int_max = 4.0f;           /*俯仰角积分[-5~+5][deg]*/
     theta_int_min = -4.0f;
     PWMin[0].vol = PWMin[1].vol = PWMin[3].vol = PWMin[4].vol = PWMout[5].vol = 1.5;

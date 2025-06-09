@@ -1,4 +1,4 @@
-﻿#include "yn.h"
+#include "yn.h"
 
 /*********状态变量定义 simu state define*********/
 float ac_theta, ac_phi, ac_psi;                                        //attitude 姿态角
@@ -22,9 +22,9 @@ float ele_var, ail_var, rud_var;                                       //舵面�
 float ail_trim, ele_trim, rud_trim, eng_trim;                          //初始平飞配平值
 float psi_cmd;                                                         //给定航向
 
-float theta_int, theta_int_min, theta_int_max;                         //俯仰角控制积分，上下限幅
+float theta_i, theta_int_min, theta_int_max;                         //俯仰角控制积分，上下限幅
 float gama_int, gama_int_min, gama_int_max;                            //滚转角控制积分，上下限幅
-float H_int, H_int_min, H_int_max;                                     //高度控制积分，上下限幅
+float H_i, H_i_min, H_i_max;                                           //高度控制积分，上下限幅
 float KpV, IpV, engine_V = 0, theta_V = 0;                             //空速控制增益，油门积分，俯仰角积分
 float Igama = 0;                                                       //滚转角控制积分           
 float landing_high;                                                    //着陆起始高度

@@ -3,37 +3,29 @@
 #include "Sim.h"
 #include "yn.h"
 
-// void		(*aircraft)();
-double T, state_x[13], u[4], t = 0, alphi_xtrim;
-int sim_step, sim_status;
-short step_long = 0, psi_count = 0;
-short flag_Stop = 1;
-double H_out = 0, H_int1 = 0;
+#define dt 0.01
 
-#define freq 200
-#define dt 1 / freq
-#define Re 6378137.0
-
-#define DT 0.01
-
-#define KP_H 1.2
+#define KP_H 0.8
 #define KI_H 0.1
 #define KD_H 0
 
-#define KP_THETA 0.7
-#define KI_THETA 0.3
-#define KD_THETA 0.1
+#define KP_THETA 0.5
+#define KI_THETA 0.05
+#define KD_THETA 0
 
-#define KP_PHI 3
-#define KI_PHI 0.5
-#define KD_PHI 0.1
+#define KP_PHI 1.6
+#define KI_PHI 0
+#define KD_PHI 0
 
 #define KP_SPEED 1000
 #define KI_SPEED 1500
 #define KD_SPEED 0
 
-#define THETA_LEVEL 0.993401430622199  // [deg]
-#define ENG_LEVEL 46.262948302356023   // [%]
+#define THETA_LEVEL 2  // [deg]
+#define ENG_LEVEL 55   // [%]
+
+short step_long = 0;
+double H_out = 0;
 
 double Maxmin(double x, double max, double min) {
     if(x > max)
@@ -44,67 +36,49 @@ double Maxmin(double x, double max, double min) {
 }
 
 double Psi_180(double psi) {
-    int n = psi / 360;
-    psi -= 360 * n;
-    if(psi > 180)
-        psi -= 360;
-    if(psi < -180) {
-        psi += 360;
-    }
+    while(psi > 180) psi -= 360;
+    while(psi < -180) psi += 360;
     return psi;
 }
 
 void ctrl_alt(void) {
-    static double H_i = 0, H_e = 0, H_prev = 0;
+    static double H_e = 0, H_prev = 0;
 
-    H_e = height_cmd - ac_height;  // 高度误差
-
+    H_e = Maxmin(height_cmd - ac_height, 0.5, -0.5);  // 高度误差
     H_prev = ac_height;
-
-    if(H_e > 20)
-        H_i += 20 * DT;
-    else if(H_e < -20)
-        H_i += -20 * DT;
-    else
-        H_i += H_e * DT;  // 积分项, dt=0.01s
-
-    // if (H_i > 20)
-    //     H_i = 20;
-    // else if (H_i < -20)
-    //     H_i = -20;
-
+    H_i += H_e * dt;
+    H_i = Maxmin(H_i, 0.5, -0.5);
     H_out = KP_H * H_e + KI_H * H_i + KD_H * ac_dH;  // 高度控制
+    // H_out = 0;
 }
 
-void ctrl_long(void) {  // incremental PID
-    static double theta_e = 0, theta_e1 = 0, theta_e2 = 0;  // 当前、上一次、上上次误差
-    static double du = 0;
+void ctrl_long(void) {  // 常规PID
+    static double theta_e = 0, theta_prev = 0;
+    double theta_d = 0, du = 0;
 
     theta_e = theta_cmd + H_out - ac_theta * Rad2Deg;
+    theta_i += theta_e * dt;
+    theta_i = Maxmin(theta_i, 1, -1);  // 积分限幅
+    theta_d = (theta_e - theta_prev) / dt;
 
-    du = KP_THETA * (theta_e - theta_e1) + KI_THETA * theta_e * DT +
-        KD_THETA * (theta_e - 2 * theta_e1 + theta_e2) / DT;
+    ele_var = KP_THETA * theta_e + KI_THETA * theta_i + KD_THETA * ac_Q * Rad2Deg;
 
-    ac_ele -= du;  // 舵量输入相反
-
-    theta_e2 = theta_e1;
-    theta_e1 = theta_e;
+    theta_prev = theta_e;
 }
 
 /*飞行器速度控制*/
 void ctrl_speed() {
-    static double speed = 0, speed_e1 = 0,
-        speed_e2 = 0;  // 当前、上一次、上上次误差
+    static double speed = 0, speed_e1 = 0, speed_e2 = 0;  // 当前、上一次、上上次误差
     static double du = 0;
 
     speed = Vt_cmd - ac_vt;
 
-    du = KP_SPEED * (speed - speed_e1) + KI_SPEED * speed * DT +
-        KD_SPEED * (speed - 2 * speed_e1 + speed_e2) / DT;
+    du = KP_SPEED * (speed - speed_e1) + KI_SPEED * speed * dt +
+        KD_SPEED * (speed - 2 * speed_e1 + speed_e2) / dt;
 
-    ac_eng += du;
+    engine_var += du;
 
-    // ac_eng = Maxmin(ac_eng, 0, 100);
+    engine_var = Maxmin(engine_var, 0, 90);
 
     speed_e2 = speed_e1;
     speed_e1 = speed;
@@ -112,21 +86,18 @@ void ctrl_speed() {
 
 /*飞行器横侧向控制*/
 void ctrl_late(void) {
-    const double Kp_phi = KP_PHI, Ki_phi = KI_PHI, Kd_phi = KD_PHI;
-    static double phi_e = 0, phi_e1 = 0, phi_e2 = 0;  // 当前、上一次、上上次误差
-    static double du = 0;
+    static double phi_i = 0, phi_e = 0, phi_prev = 0;
+    double phi_d = 0, du = 0;
 
+    psi_hmr = Psi_180(ac_psi * Rad2Deg);  // 真航向
     phi_e = gama_cmd - ac_phi * Rad2Deg;
+    phi_i += phi_e * dt;
+    phi_i = Maxmin(phi_i, 1, -1);  // 积分限幅
+    phi_d = (phi_e - phi_prev) / dt;
 
-    du = Kp_phi * (phi_e - phi_e1) + Ki_phi * phi_e * DT +
-        Kd_phi * (phi_e - 2 * phi_e1 + phi_e2) / DT;
+    ail_var = KP_PHI * phi_e + KI_PHI * phi_i + KD_PHI * ac_P * Rad2Deg;
 
-    ac_ail -= du;  // 舵量输入相反
-    ac_ail = Maxmin(ac_ail, 30, -30);
-    ac_rud = Maxmin(ac_rud, 30, -30);
-
-    phi_e2 = phi_e1;
-    phi_e1 = phi_e;
+    phi_prev = phi_e;
 }
 
 /*矩形轨迹巡航*/
@@ -136,11 +107,11 @@ void ctrl_rectangular(void) {
     switch(step_long) {
     case 0:
         psi_cmd = 0;
-        if(ac_PN >= 10) step_long++;
+        if(ac_PN >= 100) step_long++;
         break;
     case 1:
         psi_cmd = 90;
-        if(ac_PE >= 10) step_long++;
+        if(ac_PE >= 100) step_long++;
         break;
     case 2:
         psi_cmd = 180;
@@ -171,6 +142,20 @@ void ctrl_rectangular(void) {
     ctrl_late();
 }
 
+/*平飞巡航*/
+void ctrl_level(void) {
+    // if(t > 200) flag_Stop = 0;
+    Vt_cmd = 20;  // 巡航速度
+    gama_cmd = 0;
+    theta_cmd = THETA_LEVEL;
+    // height_cmd = 50; // hold on alt_gps when switching to auto mode
+
+    ctrl_cmdSmooth();
+    ctrl_alt();
+    ctrl_long();
+    ctrl_late();
+}
+
 void ctrl_approach(void) {
     const double H2 = 2, H1 = 50, path2 = 0.8, path1 = 3.5;
     static double L1, L2;
@@ -185,7 +170,7 @@ void ctrl_approach(void) {
         Vt_cmd = 30;
         if(ac_PN > -L1) {
             theta_cmd = -1;
-            ac_eng = 5;
+            engine_var = 5;
             Vt_slope = (ac_vt - 18) / (H1 - H2);
             Vt_0 = ac_vt;
             step_long++;
@@ -196,14 +181,13 @@ void ctrl_approach(void) {
         Vt_cmd = Vt_0 - Vt_slope * (H1 - ac_height);
         if(ac_PN > -L2) {
             theta_cmd = 4;
-            ac_eng = 0;
+            engine_var = 0;
             step_long++;
         }
         break;
     case 2:
         height_cmd = -ac_PN * tan(path2 / Rad2Deg);
         Vt_cmd = 17;
-        if(ac_height <= 0 || t > 50) flag_Stop = 0;
         break;
     default:
         break;
@@ -249,7 +233,7 @@ void ctrl_cmdSmooth(void) {
             gama_var = phi_total;
     }
     /*---[smoothing ele_cmd]---*/
-    ele_total = ac_ele;
+    ele_total = ele_var;
     if(ele_var < ele_total) {
         ele_var += ele_unit;
         if(ele_var > ele_total)
@@ -262,7 +246,7 @@ void ctrl_cmdSmooth(void) {
     }
 
     /*---[smoothing ail_cmd]---*/
-    ail_total = ac_ail;
+    ail_total = ail_var;
     if(ail_var < ail_total) {
         ail_var += ail_unit;
         if(ail_var > ail_total)
@@ -275,7 +259,7 @@ void ctrl_cmdSmooth(void) {
     }
 
     /*---[smoothing ele_cmd]---*/
-    rud_total = ac_rud;
+    rud_total = rud_var;
     if(rud_var < rud_total) {
         rud_var += rud_unit;
         if(rud_var > rud_total)
@@ -327,34 +311,6 @@ void ctrl_cmdSmooth(void) {
     }
 }
 
-/*飞行器模型解算模块，无需看懂*/
-void simu_run(void) {
-    static double g = 9.81;
-    static double Hn_x, Hn_y, Hn_z, matrix[3][3];
-    static double stheta, ctheta, sphi, cphi, spsi, cpsi;
-
-    /*dx[0] = dVt;       dx[3] = dPN;    dx[6] = dP;    dx[9] = dphi;
-    dx[1] = dalpha;    dx[4] = dPE;    dx[7] = dQ;    dx[10] = dtheta;
-    dx[2] = dbeta;     dx[5] = dH;     dx[8] = dR;    dx[11] = dpsi;*/
-
-    state_x[0] = ac_vt;    state_x[3] = ac_P;   state_x[6] = ac_theta; state_x[9] = ac_PN;
-    state_x[1] = ac_alpha; state_x[4] = ac_Q;   state_x[7] = ac_phi;  state_x[10] = ac_PE;
-    state_x[2] = ac_beta;  state_x[5] = ac_R;   state_x[8] = ac_psi;   state_x[11] = ac_height;
-    state_x[12] = ac_mass;
-
-    u[0] = ac_ele;   u[1] = ac_ail;  u[2] = ac_rud;  u[3] = ac_eng;
-
-    //rk4(aircraft, t, state_x, u, 13, 2*T, state_x, &t);
-
-    ac_vt = state_x[0];    ac_P = state_x[3];  ac_theta = state_x[6]; ac_PN = state_x[9];
-    ac_alpha = state_x[1]; ac_Q = state_x[4];  ac_phi = state_x[7];  ac_PE = state_x[10];
-    ac_beta = state_x[2];  ac_R = state_x[5];  ac_psi = state_x[8];   ac_height = state_x[11];  ac_mass = state_x[12];
-    //gps_truecourse = Psi_360(ac_psi * Rad2Deg);
-    //	ac_ax= -g*sin(ac_theta);
-    //	ac_ay=  g*cos(ac_theta)*sin(ac_phi);
-    //	ac_az=  g*cos(ac_theta)*cos(ac_phi);
-}
-
 /*飞行器模型解算初始化，无需看懂*/
 void simu_init(void) {
     ac_vt = 25;         ac_alpha = 2.3240 / Rad2Deg;   ac_beta = 0 / Rad2Deg;
@@ -365,12 +321,7 @@ void simu_init(void) {
     ac_mass = 17;
     Vt_var = ac_vt;
     height_var = ac_height;
-    sim_step = 5;   //5ms
-    sim_status = 0;
-    T = sim_step / 1000.0f; 	t = 0;
-    //aircraft= model6dof;
-    alphi_xtrim = 2.32 / Rad2Deg;
-    ac_ele = -0.2559;     ac_ail = 0;
-    ac_rud = 0;       ac_eng = 36.23;
-    engine_var = ac_eng;
+    ele_var = -0.2559;     ail_var = 0;
+    rud_var = 0;       engine_var = 36.23;
+    engine_var = engine_var;
 }

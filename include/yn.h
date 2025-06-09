@@ -1,14 +1,6 @@
 #ifndef _YN_H_
 #define _YN_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef signed   short INT16S; 
-typedef unsigned short INT16U;
-typedef signed   long  INT32S;  
-	
 #include "data_struct/data_struct.h"
 #include "TELE/state_define.h"	
 #include "TELE/teleH.h"	
@@ -24,8 +16,17 @@ typedef signed   long  INT32S;
 #include "startup/init.h"
 #include "hardwares/pwm.h"
 #include "hardwares/Sbus.h"
-	
-	
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    typedef signed short   INT16S;
+    typedef unsigned short INT16U;
+    typedef signed long    INT32S;
+
+    extern float runtime;
+
 #ifdef __cplusplus
 }
 #endif
