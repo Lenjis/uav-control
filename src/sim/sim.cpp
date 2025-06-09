@@ -140,6 +140,7 @@ void ctrl_rectangular(void) {
     ctrl_alt();
     ctrl_long();
     ctrl_late();
+    ctrl_speed();
 }
 
 /*平飞巡航*/
